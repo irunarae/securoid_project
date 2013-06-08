@@ -53,7 +53,7 @@ public class Server_App {
 				String[] toks = rcv_packet.split(" ");
 				rcv_id = Integer.parseInt(toks[0]);
 				rcv_type = Integer.parseInt(toks[1]);
-				//type에 대한 검사도 할지 고민해야함.
+				//another verification for the type may be needed?
 				rcv_data = toks[2];
 				
 				if(rcv_type == 0){
@@ -76,17 +76,21 @@ public class Server_App {
 						snd_packet = String.valueOf(user1.id) + " " + "1" + " " + String.valueOf(tmp_r) + " " + String.valueOf(tmp_otp_key);
 						pw.println(snd_packet);
 					}
-					//user에 들어가는 정의 조금 바꿀 것
+					//should redefine user class
 				}
 				else if(rcv_type == 1){
-					//
+					//hashing Hash(r, otp_key)
+					//compare the Hashed value with rcvd data
+					//if the value is correct
 					
+					//sql point
+					//send the decryption key with seed encrypted
 				}
 				else if(rcv_type == 2){
-					
+					//reserved
 				}
 				else if(rcv_type == 3){
-					
+					//reserved
 				}
 			}
 			
