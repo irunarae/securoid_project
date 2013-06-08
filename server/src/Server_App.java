@@ -5,6 +5,7 @@ import static java.lang.System.*;
 public class Server_App {
 	public static void main(String[] args) throws IOException
 	{
+
 		ServerSocket ss = new ServerSocket(1988);
 		//making socket for server with port number 1988 which is my birth year kk sorry to the young
 		

@@ -4,11 +4,12 @@ import static java.lang.System.*;
 
 public class Client_App {
 	public static void main(String[] args) throws IOException{
+		System.out.println("Welcome to Securoid!");
 		String s = "Input to the server";
 		//this is just test input
 		
-		Socket sock = new Socket("163.152.161.155", 1988);
-		System.out.println("Attempt to make connection to address, 163.152.161.155 with port number 1988");
+		Socket sock = new Socket("14.63.198.240", 1988);
+		System.out.println("Attempt to make connection to address, 14.63.198.240 with port number 1988");
 		//making socket for client with temperature ip addr. and port number 1988 which i defined in socket_server class
 		
 		System.out.println("Will be sent : "+s);
