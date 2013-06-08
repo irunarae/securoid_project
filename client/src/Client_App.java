@@ -35,7 +35,7 @@ public class Client_App {
 		Boolean success = false;
 		//initial partition
 		
-		while(success){
+		while(!success){
 			if(type == 0){
 				data = String.valueOf(passwd);
 				snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
@@ -55,20 +55,20 @@ public class Client_App {
 			if(rcv_id != id)
 				continue;
 			rcv_type = Integer.parseInt(toks[1]);
-			//type¿¡ ´ëÇÑ °Ë»çµµ ÇÒÁö °í¹ÎÇØ¾ßÇÔ.
+			//typeï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»çµµ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½.
 			rcv_data = toks[2];
 			
 			if(rcv_type == 1){
-				//seed ¹¹ ÇÏ°í ¹¹ÇÏ°í..
+				//seed ï¿½ï¿½ ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½..
 			}
 			else if(rcv_type == 2){
-				//¹¹ ÇÏ°í ¹¹ÇÏ°í
+				//ï¿½ï¿½ ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½
 			}
 			else if(rcv_type == 3){
-				//³ª³ª³ª³ª
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			}
 			else{
-				//¿¹¿¹¿¹¿¹
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			}
 		}
 		
