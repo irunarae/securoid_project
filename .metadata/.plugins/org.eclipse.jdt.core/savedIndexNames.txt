@@ -1,1 +1,0 @@
-INDEX VERSION 1.126+C:\Users\USER\Documents\GitHub\securoid_project\.metadata\.plugins\org.eclipse.jdt.core
