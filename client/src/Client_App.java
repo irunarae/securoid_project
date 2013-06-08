@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import static java.lang.System.*;
 
 public class Client_App {
 	public static void main(String[] args) throws IOException{
@@ -7,13 +8,13 @@ public class Client_App {
 		//this is just test input
 		
 		Socket sock = new Socket("163.152.161.155", 1988);
-		System.out.printIn("Attempt to make connection to address, 163.152.161.155 with port number 1988");
+		System.out.println("Attempt to make connection to address, 163.152.161.155 with port number 1988");
 		//making socket for client with temperature ip addr. and port number 1988 which i defined in socket_server class
 		
-		System.out.printIn("Will be sent : "+s);
+		System.out.println("Will be sent : "+s);
 		PrintWriter pw = new PrintWriter(sock.getOutputStream(), true);
 		//print writer which sends messages via socket
-		pw.printIn(s);
+		pw.println(s);
 		//send the message to server for test
 		
 		
@@ -21,7 +22,7 @@ public class Client_App {
 		//buffered reader which gets messages from socket
 		
 		String reader = br.readLine();
-		System.out.printIn("Rcvd : "+reader);
+		System.out.println("Rcvd : "+reader);
 		//get actual messages from buffered reader
 		//and print that
 		
