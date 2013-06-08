@@ -3,6 +3,7 @@ import java.net.*;
 import static java.lang.System.*;
 import java.sql.*;
 
+
 public class Server_App {
 	
 
@@ -17,7 +18,7 @@ public class Server_App {
 			}
 			
 			catch(ClassNotFoundException cnfe){
-				System.out.println("해당 클래스를 찾을 수 없습니다."+cnfe.getMessage());
+				System.out.println("cannot find that class"+cnfe.getMessage());
 			}
 			
 			catch(SQLException se){
