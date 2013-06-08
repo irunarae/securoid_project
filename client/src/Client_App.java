@@ -59,13 +59,28 @@ public class Client_App {
 			rcv_data = toks[2];
 			
 			if(rcv_type == 1){
-				//seed �� �ϰ� ���ϰ�..
+				//Login Process
+				
+				//data = 
+				snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
+				pw.println(snd_packet);
+				type++;
 			}
 			else if(rcv_type == 2){
-				//�� �ϰ� ���ϰ�
+				//OTP Authentication
+				
+				//data = 
+				snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
+				pw.println(snd_packet);
+				type++;
 			}
 			else if(rcv_type == 3){
-				//��������
+				//OTP Failure
+				
+				//data = 
+				snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
+				pw.println(snd_packet);
+				type++;
 			}
 			else{
 				//��������
