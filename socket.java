@@ -3,6 +3,15 @@
 import java.io.*;
 import java.net.*;
 
+typedef struct _packet{
+int id;
+//for user synchronization
+int type;
+//indicates what the message's type is
+String data;
+//appended data(r, key etc.)
+}packet;
+
 public class socket_server{
 	public static void main(String[] args) throws IOException
 	{
