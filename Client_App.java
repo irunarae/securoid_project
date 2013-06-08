@@ -1,14 +1,16 @@
 import java.io.*;
 import java.net.*;
 
-typedef struct _packet{
+typedef struct _user{
 int id;
 //for user synchronization
 int type;
 //indicates what the message's type is
 String data;
 //appended data(r, key etc.)
-}packet;
+}user;
+
+String snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
 
 public class Client_App {
 	public static void main(String[] args) throws IOException{
