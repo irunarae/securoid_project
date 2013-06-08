@@ -1,10 +1,29 @@
 import java.io.*;
 import java.net.*;
 import static java.lang.System.*;
+import java.sql.*;
 
 public class Server_App {
+	
+
 	public static void main(String[] args) throws IOException
 	{
+			Connection conn = null;
+			try{
+				Class.forName("com.mysql.jdbc.Driver");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost", "root", "securoid");
+				System.out.println("DB Connected");
+				conn.close();
+			}
+			
+			catch(ClassNotFoundException cnfe){
+				System.out.println("í•´ë‹¹ í´ë˜ìŠ¤ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤."+cnfe.getMessage());
+			}
+			
+			catch(SQLException se){
+				System.out.println(se.getMessage());
+			}
+		
 			System.out.println("Waiting...");
 			ServerSocket ss = new ServerSocket(1988);
 			//making socket for server with port number 1988 which is my birth year kk sorry to the young
@@ -24,12 +43,15 @@ public class Server_App {
 			String snd_packet;
 			String data;
 
+			int username = 0;
+			int userpassword = 0;
+			
 			int rcv_id;
 			int rcv_type;
 			String rcv_packet;
 			String rcv_data;
 			
-			User user1;
+			//User user1;
 			//temp user
 			int cnt = 0;
 			
@@ -53,18 +75,18 @@ public class Server_App {
 				String[] toks = rcv_packet.split(" ");
 				rcv_id = Integer.parseInt(toks[0]);
 				rcv_type = Integer.parseInt(toks[1]);
-				//type¿¡ ´ëÇÑ °Ë»çµµ ÇÒÁö °í¹ÎÇØ¾ßÇÔ.
+				//typeï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»çµµ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½.
 				rcv_data = toks[2];
 				
 				if(rcv_type == 0){
 					//tmp
 					int tmp_pass = 0;
 					int tmp_device_id = 0;
-					user1 = new User(rcv_id, tmp_pass, tmp_device_id);
+					//user1 = new User(rcv_id, tmp_pass, tmp_device_id);
 					//sql query
 					
 					//seed decryption for rcv_data(passwd) with user.device_id
-					if(Integer.parseInt(rcv_data) != user1.passwd){
+					if(Integer.parseInt(rcv_data) != userpassword){
 						//invalid user
 						//type 4 snd_pakcet
 					}
@@ -73,10 +95,10 @@ public class Server_App {
 						//r, otp_key random generate
 						int tmp_r = 0;
 						int tmp_otp_key = 0;
-						snd_packet = String.valueOf(user1.id) + " " + "1" + " " + String.valueOf(tmp_r) + " " + String.valueOf(tmp_otp_key);
+						snd_packet = String.valueOf(username) + " " + "1" + " " + String.valueOf(tmp_r) + " " + String.valueOf(tmp_otp_key);
 						pw.println(snd_packet);
 					}
-					//user¿¡ µé¾î°¡´Â Á¤ÀÇ Á¶±İ ¹Ù²Ü °Í
+					//userï¿½ï¿½ ï¿½ï¿½î°¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ ï¿½ï¿½
 				}
 				else if(rcv_type == 1){
 					//
