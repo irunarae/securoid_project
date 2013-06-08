@@ -75,7 +75,11 @@ public class Server_App {
 				String[] toks = rcv_packet.split(" ");
 				rcv_id = Integer.parseInt(toks[0]);
 				rcv_type = Integer.parseInt(toks[1]);
+<<<<<<< HEAD
 				//type�� ���� �˻絵 ���� ����ؾ���.
+=======
+				//another verification for the type may be needed?
+>>>>>>> e04889b99e58d2973fdb27321571567c9accfdc7
 				rcv_data = toks[2];
 				
 				if(rcv_type == 0){
@@ -98,17 +102,25 @@ public class Server_App {
 						snd_packet = String.valueOf(username) + " " + "1" + " " + String.valueOf(tmp_r) + " " + String.valueOf(tmp_otp_key);
 						pw.println(snd_packet);
 					}
+<<<<<<< HEAD
 					//user�� ���� ���� ���� �ٲ� ��
+=======
+					//should redefine user class
+>>>>>>> e04889b99e58d2973fdb27321571567c9accfdc7
 				}
 				else if(rcv_type == 1){
-					//
+					//hashing Hash(r, otp_key)
+					//compare the Hashed value with rcvd data
+					//if the value is correct
 					
+					//sql point
+					//send the decryption key with seed encrypted
 				}
 				else if(rcv_type == 2){
-					
+					//reserved
 				}
 				else if(rcv_type == 3){
-					
+					//reserved
 				}
 			}
 			
