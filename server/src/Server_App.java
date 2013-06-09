@@ -6,10 +6,10 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
+//import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 
 import java.sql.*;
 
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 
 public class Server_App {
 
@@ -56,7 +56,7 @@ public class Server_App {
 			String rcv_packet;
 			String rcv_data;
 
-			//User user1 = null;
+			User user1 = null;
 			//temp user
 			int cnt = 0;
 			
@@ -122,7 +122,7 @@ public class Server_App {
 						System.err.println("SQL Error");
 					}
 					
-					User user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
+					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
 					
 					char[] decrypt_Input = new char[16];
 					char[] decrypt_Output = new char[16];
