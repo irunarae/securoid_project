@@ -142,13 +142,15 @@ public class Server_App {
 					
 					for(int k=0; k<rcv_data.length(); k++)
 						decrypt_Input[k]= rcv_data.charAt(k);
-
+					
+					for(int k=rcv_data.length(); k<16; k++)
+						decrypt_Input[k]= 0;
 					seed.SeedDecrypt(decrypt_Input, pdwRoundKey, decrypt_Output);
 					
 					String rcv_pass="";
 					
-					for(int k=rcv_data.length(); k<16; k++)
-						decrypt_Input[k]= 0;//= seed_decrypt(user1.device_id, rcv_data);
+					for(int k=0; k<16; k++)
+						rcv_pass += decrypt_Output[k];//= seed_decrypt(user1.device_id, rcv_data);
 					
 					//seed decryption for rcv_data(passwd) with user.device_id
 					if(!rcv_pass.equals(user1.passwd)){
