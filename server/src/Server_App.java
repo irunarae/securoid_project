@@ -115,11 +115,14 @@ public class Server_App {
 						stmt = conn.createStatement();
 						System.out.println("Error point 1");
 						
-						rq = stmt.executeQuery(resultQuery);
-						System.out.println("Error point 2");
+						try{
+							rq = stmt.executeQuery(resultQuery);
+						}
+						catch(SQLException ex){
+							System.out.println("Error point 2");
+						}
 
 
-						rq = stmt.executeQuery(resultQuery);
 
 						
 						System.out.println("Successfully Query");
