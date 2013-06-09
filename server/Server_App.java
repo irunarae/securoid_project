@@ -147,11 +147,11 @@ public class Server_App {
 					System.out.println("Here?");
 					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
 					System.out.println("Here?1");
-					byte[] decrypt_Input = new byte[16];
-					byte[] decrypt_Output = new byte[16];
+					char[] decrypt_Input = new char[16];
+					char[] decrypt_Output = new char[16];
 					
 					for(int k=0; k<rcv_data.length(); k++)
-						decrypt_Input[k]= (byte)rcv_data.charAt(k);
+						decrypt_Input[k]= rcv_data.charAt(k);
 					
 					for(int k=rcv_data.length(); k<16; k++)
 						decrypt_Input[k]= 0;
