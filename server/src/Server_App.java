@@ -106,9 +106,15 @@ public class Server_App {
 					//sql query
 					
 					try{
+						System.out.println("Error point 1");
 						Statement stmt = conn.createStatement();
+						
+						System.out.println("Error point 2");
 						String resultQuery = "SELECT userpassword, device, key FROM securoid WHERE username = " + rcv_id + "";
+
+						System.out.println("Error point 3");
 						ResultSet rq = stmt.executeQuery(resultQuery);
+						
 						System.out.println("Successfully Query");
 						
 						try{
