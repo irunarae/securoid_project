@@ -5,7 +5,6 @@ import java.sql.*;
 
 
 public class Server_App {
-	
 
 	public static void main(String[] args) throws IOException
 	{
@@ -24,6 +23,7 @@ public class Server_App {
 			catch(SQLException se){
 				System.out.println(se.getMessage());
 			}
+			//connection with sql server
 		
 			System.out.println("Waiting...");
 			ServerSocket ss = new ServerSocket(1988);
@@ -33,7 +33,9 @@ public class Server_App {
 			//wait until completion of making connection with client
 			System.out.println("Server has connected "+sock.getInetAddress()+
 					"to the client with port number "+sock.getLocalPort());
-			//connection complete
+			//connection with user
+			
+			//connection partition completed
 			
 			
 			BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
@@ -43,16 +45,13 @@ public class Server_App {
 			
 			String snd_packet;
 			String data;
-
-			int username = 0;
-			int userpassword = 0;
 			
 			int rcv_id;
 			int rcv_type;
 			String rcv_packet;
 			String rcv_data;
-			
-			//User user1;
+
+			User user1 = null;
 			//temp user
 			int cnt = 0;
 			
@@ -60,7 +59,7 @@ public class Server_App {
 				snd_packet = "";
 				data = "";
 				
-				if(cnt > 10)
+				if(cnt > 100)
 					break;
 				
 				rcv_packet = br.readLine();
@@ -76,52 +75,56 @@ public class Server_App {
 				String[] toks = rcv_packet.split(" ");
 				rcv_id = Integer.parseInt(toks[0]);
 				rcv_type = Integer.parseInt(toks[1]);
-				//type�� ���� �˻絵 ���� ����ؾ���.
+				//type should be considered after
 				rcv_data = toks[2];
 				
 				if(rcv_type == 0){
 					//tmp
 					int tmp_pass = 0;
 					int tmp_device_id = 0;
-					//user1 = new User(rcv_id, tmp_pass, tmp_device_id);
+					int tmp_key = 0;
+					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
 					//sql query
 					
 					//seed decryption for rcv_data(passwd) with user.device_id
-					if(Integer.parseInt(rcv_data) != userpassword){
+					if(Integer.parseInt(rcv_data) != user1.passwd){
 						//invalid user
-						//type 4 snd_pakcet
+						snd_packet = String.valueOf(user1.id) + " " + "4";
 					}
 					else{
 						//valid user
 						//r, otp_key random generate
 						int tmp_r = 0;
 						int tmp_otp_key = 0;
-						snd_packet = String.valueOf(username) + " " + "1" + " " + String.valueOf(tmp_r) + " " + String.valueOf(tmp_otp_key);
+						user1.set_r(tmp_r);
+						user1.set_otp_key(tmp_otp_key);
+						//r, otp_key generation partition ended
+						
+						snd_packet = String.valueOf(user1.id) + " " + "1" + " " + String.valueOf(tmp_r) + " " + String.valueOf(tmp_otp_key);
 						pw.println(snd_packet);
 					}
-					//user�� ���� ���� ���� �ٲ� ��
+					//user
 				}
 				else if(rcv_type == 1){
-					//
+					//user null check should be done
 					
-				}
-				else if(rcv_type == 2){
+					//rcv_data = hash(r, otp_key)
+					//with user's id, find the user's own r, otp_key from the user class
+					int tmp_hash = 0;//=hash(user1.r, user1.otp_key)
 					
-				}
-				else if(rcv_type == 3){
-					
+					if(Integer.parseInt(rcv_data) != tmp_hash){
+						//invalid user
+						snd_packet = String.valueOf(user1.id) + " " + "4"; 
+					}
+					else{
+						int key = user1.key;
+						int tmp_key = key;// = seed(otp_key, key)
+						
+						snd_packet = String.valueOf(user1.id) + " " + "2" + " " + String.valueOf(tmp_key); 
+						pw.println(snd_packet);
+					}
 				}
 			}
-			
-			
-			String reader = br.readLine();
-			System.out.println("Rcvd : "+reader);
-			//get actual messages from buffered reader
-			//and print that
-			
-			pw.println(reader);
-			System.out.println("Sent : "+reader);
-			//send the message from the client to test
 			
 			pw.close();
 			br.close();

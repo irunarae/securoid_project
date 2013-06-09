@@ -41,6 +41,7 @@ public class Client_App {
 				snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
 				pw.println(snd_packet);
 				type++;
+				//type 0 is actual login process
 			}
 			
 			rcv_packet = br.readLine();
@@ -55,28 +56,29 @@ public class Client_App {
 			if(rcv_id != id)
 				continue;
 			rcv_type = Integer.parseInt(toks[1]);
-			//type�� ���� �˻絵 ���� ����ؾ���.
+			//type should be considered after
 			rcv_data = toks[2];
 			
 			if(rcv_type == 1){
-				//Login Process
+				//OTP Process
+				//rcv_data = r, otp_key
+				//should split data once again
 				
-				//data = 
+				//snd data = hash(r, otp_key)
 				snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
 				pw.println(snd_packet);
 				type++;
 			}
 			else if(rcv_type == 2){
-				//OTP Authentication
+				//OTP Authentication completed
 				
 				//data = 
-				snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
-				pw.println(snd_packet);
-				type++;
 			}
 			else if(rcv_type == 3){
 				//OTP Failure
 				
+				
+				//restart? or ..?
 				//data = 
 				snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
 				pw.println(snd_packet);
