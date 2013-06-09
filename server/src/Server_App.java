@@ -156,8 +156,7 @@ public class Server_App {
 					for(int k=0; k<rcv_data.length(); k++)
 						decrypt_Input[k]= (byte)rcv_data.charAt(k);
 					
-					for(int k=rcv_data.length(); k<16; k++)
-						decrypt_Input[k]= 0;
+					
 					seed.SeedRoundKey(pdwRoundKey, user1.device_id.getBytes("KSC5601"));
 					seed.SeedDecrypt(decrypt_Input, pdwRoundKey, decrypt_Output);
 					System.out.println("Here?2");
