@@ -58,12 +58,12 @@ public class Client_App {
 				break;
 			
 			if(type == 0){
-				char[] passwd_Input = new char[16];
-				char[] passwd_Output= new char[16];
+				byte[] passwd_Input = new byte[16];
+				byte[] passwd_Output= new byte[16];
 				String passwd_Send="";
 				
 				for(int k=0; k< passwd.length(); k++)
-					passwd_Input[k]=passwd.charAt(k);
+					passwd_Input[k]=(byte)passwd.charAt(k);
 				
 				for(int k=passwd.length();k<16;k++){
 					passwd_Input[k]=0;//add padding to make 16 bytes. 
