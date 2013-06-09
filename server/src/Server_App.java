@@ -144,7 +144,7 @@ public class Server_App {
 					catch(SQLException ex){
 						System.err.println("SQL Error_2");
 					}
-					
+					System.out.println("Here?");
 					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
 					System.out.println("Here?1");
 					char[] decrypt_Input = new char[16];
