@@ -44,9 +44,8 @@ public class Server_App {
 			//print writer which sends messages via socket
 			
 			String snd_packet;
-			String data;
 			
-			int rcv_id;
+			String rcv_id;
 			int rcv_type;
 			String rcv_packet;
 			String rcv_data;
@@ -57,10 +56,10 @@ public class Server_App {
 			
 			while(true){
 				snd_packet = "";
-				data = "";
 				
 				if(cnt > 100)
 					break;
+				//after 100 check terminate
 				
 				rcv_packet = br.readLine();
 				if(rcv_packet == null){
@@ -73,34 +72,37 @@ public class Server_App {
 				//for test
 				
 				String[] toks = rcv_packet.split(" ");
-				rcv_id = Integer.parseInt(toks[0]);
+				rcv_id = toks[0];
 				rcv_type = Integer.parseInt(toks[1]);
 				//type should be considered after
 				rcv_data = toks[2];
 				
 				if(rcv_type == 0){
 					//tmp
-					int tmp_pass = 0;
-					int tmp_device_id = 0;
-					int tmp_key = 0;
-					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
+					String tmp_pass = "passwd";
+					String tmp_device_id = "device_id";
+					String tmp_key = "key";
 					//sql query
 					
+					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
+					
+					
 					//seed decryption for rcv_data(passwd) with user.device_id
-					if(Integer.parseInt(rcv_data) != user1.passwd){
+					if(rcv_data != user1.passwd){
 						//invalid user
 						snd_packet = String.valueOf(user1.id) + " " + "4";
 					}
 					else{
 						//valid user
-						//r, otp_key random generate
 						int tmp_r = 0;
-						int tmp_otp_key = 0;
+						String tmp_otp_key = "otp_key";
+						//r, otp_key random generate
+						
 						user1.set_r(tmp_r);
 						user1.set_otp_key(tmp_otp_key);
 						//r, otp_key generation partition ended
 						
-						snd_packet = String.valueOf(user1.id) + " " + "1" + " " + String.valueOf(tmp_r) + " " + String.valueOf(tmp_otp_key);
+						snd_packet = String.valueOf(user1.id) + " " + "1" + " " + String.valueOf(tmp_r) + " " + tmp_otp_key;
 						pw.println(snd_packet);
 					}
 					//user
@@ -108,19 +110,24 @@ public class Server_App {
 				else if(rcv_type == 1){
 					//user null check should be done
 					
-					//rcv_data = hash(r, otp_key)
+					//String tmp;
+					//tmp = otp_key
+					//for(int i = 0 ; i < r ; i ++)
+					//	tmp = hash(tmp)
+					//
+					//
 					//with user's id, find the user's own r, otp_key from the user class
-					int tmp_hash = 0;//=hash(user1.r, user1.otp_key)
+					String tmp_hash = "tmp";
 					
-					if(Integer.parseInt(rcv_data) != tmp_hash){
+					if(rcv_data != tmp_hash){
 						//invalid user
-						snd_packet = String.valueOf(user1.id) + " " + "4"; 
+						snd_packet = user1.id + " " + "4"; 
 					}
 					else{
-						int key = user1.key;
-						int tmp_key = key;// = seed(otp_key, key)
+						String key = user1.key;
+						String tmp_key = key;// = seed(otp_key, key)
 						
-						snd_packet = String.valueOf(user1.id) + " " + "2" + " " + String.valueOf(tmp_key); 
+						snd_packet = user1.id + " " + "2" + " " + tmp_key; 
 						pw.println(snd_packet);
 					}
 				}
