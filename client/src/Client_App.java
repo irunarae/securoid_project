@@ -17,9 +17,9 @@ public class Client_App {
 		//buffered reader which gets messages from socket
 		System.out.println("Success");
 		
-		String id = "my_id";
+		String id = "securoid";
 		int type = 0;
-		String passwd = "passwd";
+		String passwd = "securoid";
 		String device_id = "1234567891011121";
 		byte deviceKey[] = device_id.getBytes("KSC5601");
 		
