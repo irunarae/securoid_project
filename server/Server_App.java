@@ -150,6 +150,7 @@ public class Server_App {
 					byte[] decrypt_Input = new byte[16];
 					byte[] decrypt_Output = new byte[16];
 					
+					System.out.println("------------------- Error Detector : " + rcv_data.length()));
 					for(int k=0; k<rcv_data.length(); k++)
 						decrypt_Input[k]= (byte)rcv_data.charAt(k);
 					
