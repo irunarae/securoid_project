@@ -110,7 +110,7 @@ public class Server_App {
 					try{
 						
 
-						String resultQuery = "SELECT * FROM securoid WHERE username = '" + rcv_id + "'";
+						String resultQuery = "SELECT * FROM securoid.securoid WHERE username = '" + rcv_id + "'";
 
 						stmt = conn.createStatement();
 							
