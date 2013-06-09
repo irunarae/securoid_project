@@ -69,13 +69,17 @@ public class Server_App {
 			while(true){
 				snd_packet = "";
 				
-				if(cnt > 10000000)
+				if(cnt > 10000000){
+					System.out.println("bye");
 					break;
+				}
 				//after 100 check terminate
 				
 				rcv_packet = br.readLine();
 				if(rcv_packet == null){
 					cnt++;
+					if(cnt % 10000 == 0)
+						System.out.println(String.valueOf(cnt));
 					continue;
 				}
 				
@@ -166,6 +170,7 @@ public class Server_App {
 					if(!rcv_pass.equals(user1.passwd)){
 						//invalid user
 						snd_packet = user1.id + " " + "4";
+						System.out.println("bye invalid user");
 					}
 					else{
 						//valid user
@@ -183,6 +188,8 @@ public class Server_App {
 						
 						snd_packet = user1.id + " " + "1" + " " + String.valueOf(r) + " " + otp_key;
 						pw.println(snd_packet);
+						System.out.println(snd_packet);
+						System.out.println("send complete");
 					}
 					System.out.println("Here?4");
 					//user

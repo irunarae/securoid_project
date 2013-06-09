@@ -59,7 +59,7 @@ public class Client_App {
 			
 			if(type == 0){
 				char[] passwd_Input = new char[16];
-				char[] passwd_Output=new char[16];
+				char[] passwd_Output= new char[16];
 				String passwd_Send="";
 				
 				for(int k=0; k< passwd.length(); k++)
