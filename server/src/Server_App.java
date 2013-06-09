@@ -134,18 +134,18 @@ public class Server_App {
 					}
 					else{
 						//valid user
-						int tmp_r = 0;
-						String tmp_otp_key = "otp_key";
+						int r = random_r();
+						String otp_key = random_otp_key();
 						//r, otp_key random generate
 						
-						user1.set_r(tmp_r);
-						user1.set_otp_key(tmp_otp_key);
+						user1.set_r(r);
+						user1.set_otp_key(otp_key);
 						//r, otp_key generation partition ended
 						
 						//tmp_r = seed_encrypt(device_id, r);
 						//tmp_otp_key = seed_encrypt(device_id, r);
 						
-						snd_packet = user1.id + " " + "1" + " " + String.valueOf(tmp_r) + " " + tmp_otp_key;
+						snd_packet = user1.id + " " + "1" + " " + String.valueOf(r) + " " + otp_key;
 						pw.println(snd_packet);
 					}
 					//user
@@ -188,4 +188,31 @@ public class Server_App {
 			//all should be closed after working
 	
 	}	
+	
+	public static int random_r(){
+		int r;
+		int max = 1000;
+		int min = 10;
+		
+		r = (int)(Math.random()*(max-min+1))+min;
+		
+		return r;
+	}
+	
+	public static String random_otp_key(){
+		char[] tmp = new char[16];
+		int char_max = 255;
+		int char_min = 0;
+		String otp_key = null;
+		
+		for(int i = 0 ; i < 16 ; i ++){
+			tmp[i] = (char)((int)(Math.random()*(char_max-char_min+1))+char_min);
+		}
+		
+		otp_key = new String(tmp);
+		
+		return otp_key;
+	}
 }
+
+
