@@ -17,31 +17,39 @@ public class Client_App {
 		//buffered reader which gets messages from socket
 		System.out.println("Success");
 		
-		int id = 0;
+		String id = "my_id";
 		int type = 0;
-		int passwd = 0;
+		String passwd = "passwd";
+		String device_id = "device_id";
+		int r = 0;
+		String otp_key = null;
+		
+		String key = null;
 		//tmp initialization
 		//should get from the user's input or arguments
-		
 		String snd_packet = "";
-		String data = "";
 
-		int rcv_id;
-		int rcv_type;
 		String rcv_packet = "";
-		String rcv_data = "";
+		String rcv_id;
+		int rcv_type;
+		String rcv_data, rcv_data2 = "";
 		
 		
 		Boolean success = false;
+		int cnt = 0;
 		//initial partition
 		
 		while(!success){
+			if(cnt > 3)
+				break;
+			
 			if(type == 0){
-				data = String.valueOf(passwd);
-				snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
+				//passwd = seed_encrypt(device_id, passwd);
+				snd_packet = id + " " + String.valueOf(type) + " " + passwd;
 				pw.println(snd_packet);
 				type++;
 				//type 0 is actual login process
+				//initial sending
 			}
 			
 			rcv_packet = br.readLine();
@@ -52,49 +60,50 @@ public class Client_App {
 			//for test
 			
 			String[] toks = rcv_packet.split(" ");
-			rcv_id = Integer.parseInt(toks[0]);
+			rcv_id = toks[0];
 			if(rcv_id != id)
 				continue;
 			rcv_type = Integer.parseInt(toks[1]);
 			//type should be considered after
 			rcv_data = toks[2];
+			if(toks[3] != null)
+				rcv_data2 = toks[3];
 			
 			if(rcv_type == 1){
 				//OTP Process
-				//rcv_data = r, otp_key
-				//should split data once again
+				r = Integer.parseInt(rcv_data);
+				//r = seed_decrypt(device_id, r);
+				otp_key = rcv_data2;
+				//otp_key = seed_decrypt(device_id, otp_key);
 				
-				//snd data = hash(r, otp_key)
-				snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
+				Securoid_Hashing hash = new Securoid_Hashing();
+				
+				String tmp;
+				tmp = otp_key;
+				for(int i = 0 ; i < r ; i ++)
+					tmp = hash.MD5(tmp);
+				//with user's id, find the user's own r, otp_key from the user class
+				
+				String hashed_key = tmp;
+				//hashed_key = seed_encrypt(device_id, tmp);
+				snd_packet = id + " " + String.valueOf(type) + " " + hashed_key;
 				pw.println(snd_packet);
 				type++;
 			}
 			else if(rcv_type == 2){
 				//OTP Authentication completed
-				
-				//data = 
-			}
-			else if(rcv_type == 3){
-				//OTP Failure
-				
-				
-				//restart? or ..?
-				//data = 
-				snd_packet = String.valueOf(id) + " " + String.valueOf(type) + " " + data;
-				pw.println(snd_packet);
-				type++;
+				key = rcv_data;//=seed_decrypt(device_id, rcv_data);
+				//finally we get the key for decryption
+				success = true;
 			}
 			else{
-				//��������
+				//OTP Failure
+				//restart?
+				type = 0;
+				cnt++;
+				//retry trois
 			}
 		}
-		
-		//initial sending
-		//1st : sending log-in process
-		
-		//System.out.println("Rcvd : "+reader);
-		//get actual messages from buffered reader
-		//and print that
 		
 		br.close();
 		pw.close();

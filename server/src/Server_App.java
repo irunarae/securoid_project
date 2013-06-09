@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.net.*;
 import static java.lang.System.*;
@@ -18,11 +19,9 @@ public class Server_App {
 				System.out.println("DB Connected");
 				
 			}
-			
 			catch(ClassNotFoundException cnfe){
 				System.out.println("cannot find that class"+cnfe.getMessage());
 			}
-			
 			catch(SQLException se){
 				System.out.println(se.getMessage());
 			}
@@ -86,16 +85,16 @@ public class Server_App {
 					String tmp_device_id = "device_id";
 					String tmp_key = "key";
 					//sql query
+					/*
 					try{
 						Statement stmt = conn.createStatement();
-						String resultQuery = "SELECT userpassword, device, key FROM securoid WHERE username = rcv_id";
+						String resultQuery = "SELECT userpassword, device, key FROM securoid WHERE username = " + rcv_id;
 						ResultSet rq = stmt.executeQuery(resultQuery);
 						try{
 							while(rq.next()){
 							tmp_pass = rq.getString("userpassword");
 							tmp_device_id = rq.getString("device");
 							tmp_key = rq.getString("key");
-						
 							}
 						}finally{
 							try{
@@ -110,18 +109,16 @@ public class Server_App {
 							stmt.close();
 						}
 						catch(Throwable ignore){
-							
 						}
 					}
-					
-					
+					*/
 					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
-					
+					String rcv_pass = rcv_data;//= seed_decrypt(user1.device_id, rcv_data);
 					
 					//seed decryption for rcv_data(passwd) with user.device_id
-					if(rcv_data != user1.passwd){
+					if(rcv_pass != user1.passwd){
 						//invalid user
-						snd_packet = String.valueOf(user1.id) + " " + "4";
+						snd_packet = user1.id + " " + "4";
 					}
 					else{
 						//valid user
@@ -133,7 +130,10 @@ public class Server_App {
 						user1.set_otp_key(tmp_otp_key);
 						//r, otp_key generation partition ended
 						
-						snd_packet = String.valueOf(user1.id) + " " + "1" + " " + String.valueOf(tmp_r) + " " + tmp_otp_key;
+						//tmp_r = seed_encrypt(device_id, r);
+						//tmp_otp_key = seed_encrypt(device_id, r);
+						
+						snd_packet = user1.id + " " + "1" + " " + String.valueOf(tmp_r) + " " + tmp_otp_key;
 						pw.println(snd_packet);
 					}
 					//user
@@ -141,22 +141,27 @@ public class Server_App {
 				else if(rcv_type == 1){
 					//user null check should be done
 					
-					//String tmp;
-					//tmp = otp_key
-					//for(int i = 0 ; i < r ; i ++)
-					//	tmp = hash(tmp)
-					//
-					//
-					//with user's id, find the user's own r, otp_key from the user class
-					String tmp_hash = "tmp";
+					String tmp;
+					int tmp_r;
+					tmp = user1.get_otp_key();
+					tmp_r = user1.get_r();
+					Securoid_Hashing hash = new Securoid_Hashing();
 					
-					if(rcv_data != tmp_hash){
+					for(int i = 0 ; i < tmp_r ; i ++)
+						tmp = hash.MD5(tmp);
+					//with user's id, find the user's own r, otp_key from the user class
+					String tmp_hash = tmp;
+					
+					String rcv_hash = rcv_data;
+					//rcv_hash = seed_decrypt(device_id, rcv_hash);
+					
+					if(rcv_hash != tmp_hash){
 						//invalid user
 						snd_packet = user1.id + " " + "4"; 
 					}
 					else{
 						String key = user1.key;
-						String tmp_key = key;// = seed(otp_key, key)
+						String tmp_key = key;// = seed_encrypt(otp_key, key)
 						
 						snd_packet = user1.id + " " + "2" + " " + tmp_key; 
 						pw.println(snd_packet);
