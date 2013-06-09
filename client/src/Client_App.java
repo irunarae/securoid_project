@@ -20,14 +20,28 @@ public class Client_App {
 		String id = "my_id";
 		int type = 0;
 		String passwd = "passwd";
-		String device_id = "device_id";
+		String device_id = "1234567891011121";
+		byte deviceKey[] = device_id.getBytes("KSC5601");
+		
 		int r = 0;
 		String otp_key = null;
 		
-		String key = null;
+		byte pbUserKey[] = {(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
+				(byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07,
+				(byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B,
+				(byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F};
+		//picture encryption key
+		
+		String key = String.valueOf(pbUserKey);
+		
+		SeedX seed = new SeedX();
+		int pdwRoundKey[] = new int[32];
+		//round key array for seed algorithm
+		
 		//tmp initialization
 		//should get from the user's input or arguments
 		String snd_packet = "";
+		byte data[] = new byte[16];
 
 		String rcv_packet = "";
 		String rcv_id;
@@ -44,6 +58,8 @@ public class Client_App {
 				break;
 			
 			if(type == 0){
+				
+				seed.SeedRoundKey(pdwRoundKey, deviceKey);
 				//passwd = seed_encrypt(device_id, passwd);
 				snd_packet = id + " " + String.valueOf(type) + " " + passwd;
 				pw.println(snd_packet);

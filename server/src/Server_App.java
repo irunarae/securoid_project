@@ -3,9 +3,6 @@ import java.io.*;
 import java.net.*;
 import static java.lang.System.*;
 import java.sql.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class Server_App {
 
@@ -56,6 +53,10 @@ public class Server_App {
 			//temp user
 			int cnt = 0;
 			
+			SeedX seed = new SeedX();
+			int pdwRoundKey[] = new int[32];
+			//round key array for seed algorithm
+			
 			while(true){
 				snd_packet = "";
 				
@@ -82,8 +83,19 @@ public class Server_App {
 				if(rcv_type == 0){
 					//tmp
 					String tmp_pass = "passwd";
-					String tmp_device_id = "device_id";
-					String tmp_key = "key";
+					String tmp_device_id = "1234567891011121";
+					try{
+						byte deviceKey[] = tmp_device_id.getBytes("KSC5601");
+					}catch(UnsupportedEncodingException e){
+						e.printStackTrace();
+					}
+					
+					byte pbUserKey[] = {(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
+							(byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07,
+							(byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B,
+							(byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F};
+					String tmp_key = String.valueOf(pbUserKey);
+					
 					//sql query
 					/*
 					try{
