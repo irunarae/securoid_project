@@ -16,6 +16,7 @@ public class Server_App {
 	public static void main(String[] args) throws IOException
 	{
 			Connection conn = null;
+			Statement stmt = null;
 			ResultSet rq = null;
 					
 			try{
@@ -109,15 +110,12 @@ public class Server_App {
 					try{
 						
 
-						String resultQuery = "SELECT userpassword, device, key FROM securoid WHERE username = '" + rcv_id + "'";
-						
+						String resultQuery = "SELECT * FROM securoid WHERE username = '" + rcv_id + "'";
 
-						PreparedStatement stmt = conn.prepareStatement(resultQuery);
-						System.out.println("Error point 3");
+						stmt = conn.createStatement();
+						System.out.println("Error point 1");
 						
-						stmt.setString(1, "userpassword");
-						stmt.setString(2, "device");
-						stmt.setString(3,  "key");
+						rq = stmt.executeQuery(resultQuery);
 						System.out.println("Error point 2");
 
 
@@ -129,8 +127,8 @@ public class Server_App {
 
 						try{
 							while(rq.next()){
-								tmp_pass = rq.getString("userpassword");
-								tmp_device_id = rq.getString("device");
+								tmp_pass = rq.getString(3);
+								tmp_device_id = rq.getString(4);
 								System.out.println(tmp_pass);
 								System.out.println(tmp_device_id);
 							}
