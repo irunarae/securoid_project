@@ -61,7 +61,7 @@ public class Client_App {
 				byte[] passwd_Input = new byte[16];
 				byte[] passwd_Output= new byte[16];
 				String passwd_Send="";
-				
+				System.out.println("==============passwd length : " + passwd.length());
 				for(int k=0; k< passwd.length(); k++)
 					passwd_Input[k]=(byte)passwd.charAt(k);
 				
