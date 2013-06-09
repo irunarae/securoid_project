@@ -118,7 +118,8 @@ public class Server_App {
 							rq = stmt.executeQuery(resultQuery);
 						}
 						catch(SQLException ex){
-							ex.getErrorCode();
+							int errorCode = ex.getErrorCode();
+							System.out.println(errorCode);
 						}
 
 
