@@ -93,6 +93,7 @@ public class Server_App {
 				rcv_data = toks[2];
 				
 				if(rcv_type == "0"){
+					System.out.println("rcv_type_0_if_statement?");
 					//tmp
 					String tmp_pass = "";
 					String tmp_device_id = "";
