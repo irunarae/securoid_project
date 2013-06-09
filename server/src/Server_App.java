@@ -85,7 +85,10 @@ public class Server_App {
 				
 				String[] toks = rcv_packet.split(" ");
 				rcv_id = toks[0];
+				System.out.println(toks[1]);
 				rcv_type = toks[1];
+
+				System.out.println(rcv_type);
 				//type should be considered after
 				rcv_data = toks[2];
 				
