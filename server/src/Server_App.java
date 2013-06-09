@@ -113,19 +113,13 @@ public class Server_App {
 						String resultQuery = "SELECT * FROM securoid WHERE username = '" + rcv_id + "'";
 
 						stmt = conn.createStatement();
-						System.out.println("Error point 1");
-						
+							
 						try{
 							rq = stmt.executeQuery(resultQuery);
 						}
 						catch(SQLException ex){
-							System.out.println("Error point 2");
+							ex.getErrorCode();
 						}
-
-
-
-						
-						System.out.println("Successfully Query");
 
 
 						try{
@@ -136,14 +130,14 @@ public class Server_App {
 								System.out.println(tmp_device_id);
 							}
 						}
-						catch(Exception ex){
+						catch(SQLException ex){
 							System.out.println("SQL Error_1");
 						}
 						rq.close();
 						stmt.close();
 						conn.close();
 					}
-					catch(SQLException e){
+					catch(SQLException ex){
 						System.err.println("SQL Error_2");
 					}
 					
