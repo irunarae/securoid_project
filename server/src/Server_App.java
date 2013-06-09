@@ -69,7 +69,7 @@ public class Server_App {
 			while(true){
 				snd_packet = "";
 				
-				if(cnt > 100)
+				if(cnt > 10000000)
 					break;
 				//after 100 check terminate
 				
