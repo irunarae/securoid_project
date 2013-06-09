@@ -107,12 +107,15 @@ public class Server_App {
 					
 					try{
 						Statement stmt = conn.createStatement();
-						String resultQuery = "SELECT userpassword, device, key FROM securoid WHERE username = " + rcv_id;
+						String resultQuery = "SELECT userpassword, device, key FROM securoid WHERE username = " + rcv_id + "";
 						ResultSet rq = stmt.executeQuery(resultQuery);
 						
 						while(rq.next()){
 							tmp_pass = rq.getString("userpassword");
 							tmp_device_id = rq.getString("device");
+							System.out.println(tmp_pass);
+							System.out.println(tmp_device_id);
+							
 						}
 						rq.close();
 						stmt.close();
