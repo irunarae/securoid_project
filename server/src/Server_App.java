@@ -54,7 +54,7 @@ public class Server_App {
 			String snd_packet;
 			
 			String rcv_id;
-			String rcv_type;
+			int rcv_type;
 			String rcv_packet;
 			String rcv_data;
 
@@ -85,14 +85,13 @@ public class Server_App {
 				
 				String[] toks = rcv_packet.split(" ");
 				rcv_id = toks[0];
-				System.out.println(toks[1]);
-				rcv_type = toks[1];
+				rcv_type = Integer.parseInt(toks[1]);
 
-				System.out.println(rcv_type);
+
 				//type should be considered after
 				rcv_data = toks[2];
 				
-				if(rcv_type == "0"){
+				if(rcv_type == 0){
 					System.out.println("rcv_type_0_if_statement?");
 					//tmp
 					String tmp_pass = "";
@@ -188,7 +187,7 @@ public class Server_App {
 					System.out.println("Here?4");
 					//user
 				}
-				else if(rcv_type == "1"){
+				else if(rcv_type == 1){
 					//user null check should be done
 					
 					String tmp;
