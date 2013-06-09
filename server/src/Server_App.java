@@ -94,7 +94,6 @@ public class Server_App {
 
 				//type should be considered after
 				rcv_data = toks[2];
-				System.out.println(rcv_data);
 				if(rcv_type == 0){
 					System.out.println("rcv_type_0_if_statement?");
 					//tmp
@@ -167,6 +166,7 @@ public class Server_App {
 						rcv_pass += decrypt_Output[k];//= seed_decrypt(user1.device_id, rcv_data);
 					System.out.println("Here?3");
 					//seed decryption for rcv_data(passwd) with user.device_id
+					System.out.println(rcv_pass);
 					if(!rcv_pass.equals(user1.passwd)){
 						//invalid user
 						snd_packet = user1.id + " " + "4";
