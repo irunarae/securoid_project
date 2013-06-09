@@ -16,6 +16,7 @@ public class Server_App {
 	public static void main(String[] args) throws IOException
 	{
 			Connection conn = null;
+			ResultSet rq = null;
 					
 			try{
 				Class.forName("com.mysql.jdbc.Driver");
@@ -110,13 +111,14 @@ public class Server_App {
 						Statement stmt = conn.createStatement();
 						
 						System.out.println("Error point 2");
-						String resultQuery = "SELECT userpassword, device, key FROM securoid WHERE username = " + rcv_id + "";
+						String resultQuery = "SELECT * FROM 'securoid' WHERE username = '" + rcv_id + "'";
 
 						System.out.println("Error point 3");
-						ResultSet rq = stmt.executeQuery(resultQuery);
+						rq = stmt.executeQuery(resultQuery);
 						
 						System.out.println("Successfully Query");
-						
+
+
 						try{
 							while(rq.next()){
 								tmp_pass = rq.getString("userpassword");
@@ -130,7 +132,7 @@ public class Server_App {
 						}
 						rq.close();
 						stmt.close();
-						
+						conn.close();
 					}
 					catch(SQLException e){
 						System.err.println("SQL Error_2");
