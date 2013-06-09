@@ -76,7 +76,7 @@ public class Client_App {
 				for(int k=0; k<16; k++)
 					passwd_Send+=passwd_Output[k];
 				
-				snd_packet = id + " " + String.valueOf(type) + " " + "securoid";
+				snd_packet = id + " " + String.valueOf(type) + " " + passwd_Send;
 
 				pw.println(snd_packet);
 				type++;
