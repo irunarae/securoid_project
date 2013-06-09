@@ -69,17 +69,13 @@ public class Server_App {
 			while(true){
 				snd_packet = "";
 				
-				if(cnt > 10000000){
-					System.out.println("bye");
+				if(cnt > 10000000)
 					break;
-				}
 				//after 100 check terminate
 				
 				rcv_packet = br.readLine();
 				if(rcv_packet == null){
 					cnt++;
-					if(cnt % 10000 == 0)
-						System.out.println(String.valueOf(cnt));
 					continue;
 				}
 				
@@ -94,6 +90,7 @@ public class Server_App {
 
 				//type should be considered after
 				rcv_data = toks[2];
+				
 				if(rcv_type == 0){
 					System.out.println("rcv_type_0_if_statement?");
 					//tmp
@@ -150,18 +147,16 @@ public class Server_App {
 					System.out.println("Here?");
 					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
 					System.out.println("Here?1");
+					
 					byte[] decrypt_Input = new byte[16];
 					byte[] decrypt_Output = new byte[16];
 					
-					System.out.println("length:"+rcv_data.length());
+					System.out.println("------------------- Error Detector : " + rcv_data.length());
+					System.out.println("------------------- RCV_DATA ORIGINAL : " + rcv_data);
 					
-					for(int k=0; k<rcv_data.length(); k++){
-						System.out.print(rcv_data.charAt(k));
+					for(int k=0; k<rcv_data.length(); k++)
 						decrypt_Input[k]= (byte)rcv_data.charAt(k);
-					}
 					
-					
-					seed.SeedRoundKey(pdwRoundKey, user1.device_id.getBytes("KSC5601"));
 					seed.SeedDecrypt(decrypt_Input, pdwRoundKey, decrypt_Output);
 					System.out.println("Here?2");
 					String rcv_pass="";
@@ -170,11 +165,9 @@ public class Server_App {
 						rcv_pass += decrypt_Output[k];//= seed_decrypt(user1.device_id, rcv_data);
 					System.out.println("Here?3");
 					//seed decryption for rcv_data(passwd) with user.device_id
-					System.out.println(rcv_pass);
 					if(!rcv_pass.equals(user1.passwd)){
 						//invalid user
 						snd_packet = user1.id + " " + "4";
-						System.out.println("bye invalid user");
 					}
 					else{
 						//valid user
@@ -192,8 +185,6 @@ public class Server_App {
 						
 						snd_packet = user1.id + " " + "1" + " " + String.valueOf(r) + " " + otp_key;
 						pw.println(snd_packet);
-						System.out.println(snd_packet);
-						System.out.println("send complete");
 					}
 					System.out.println("Here?4");
 					//user
