@@ -65,6 +65,8 @@ public class Client_App {
 				for(int k=0; k< passwd.length(); k++)
 					passwd_Input[k]=(byte)passwd.charAt(k);
 				
+				passwd_Input = passwd.getBytes();
+				
 				for(int k=passwd.length();k<16;k++){
 					passwd_Input[k]=0;//add padding to make 16 bytes. 
 				}
