@@ -125,10 +125,22 @@ public class Server_App {
 					}
 					*/
 					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
-					String rcv_pass = rcv_data;//= seed_decrypt(user1.device_id, rcv_data);
+					
+					char[] decrypt_Input = new char[16];
+					char[] decrypt_Output = new char[16];
+					
+					for(int k=0; k<16; k++)
+						decrypt_Input[k]= rcv_data.charAt(k);
+					
+					seed.SeedDecrypt(decrypt_Input, pdwRoundKey, decrypt_Output);
+					
+					String rcv_pass="";
+					
+					for(int k=0; k<16; k++)
+						rcv_pass += decrypt_Output[k];//= seed_decrypt(user1.device_id, rcv_data);
 					
 					//seed decryption for rcv_data(passwd) with user.device_id
-					if(rcv_pass != user1.passwd){
+					if(!rcv_pass.equals(user1.passwd)){
 						//invalid user
 						snd_packet = user1.id + " " + "4";
 					}
@@ -142,8 +154,9 @@ public class Server_App {
 						user1.set_otp_key(otp_key);
 						//r, otp_key generation partition ended
 						
+						
 						//tmp_r = seed_encrypt(device_id, r);
-						//tmp_otp_key = seed_encrypt(device_id, r);
+						//tmp_otp_key = seed_encrypt(device_id, otp_key);
 						
 						snd_packet = user1.id + " " + "1" + " " + String.valueOf(r) + " " + otp_key;
 						pw.println(snd_packet);

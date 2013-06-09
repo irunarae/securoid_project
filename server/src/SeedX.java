@@ -297,9 +297,9 @@ public class SeedX {
 
 	// Same as encrypt, except that round keys are applied in reverse order
 		public static void SeedDecrypt(
-						byte pbData[], 					// [in] encrypted data
+						char pbData[], 					// [in] encrypted data
 						int pdwRoundKey[], 			// [in] round keys for decryption
-						byte outData[])					// [out] data to be encrypted
+						char outData[])					// [out] data to be encrypted
 		{
 			int L0[] = new int[1];	int L1[] = new int[1];
 			int R0[] = new int[1];	int R1[] = new int[1];
@@ -369,10 +369,10 @@ public class SeedX {
 	// Copy output values from last round to outData 	
 	  	for (int i=0; i<4; i++)
 	  	{
-		  	outData[i   ] = (byte)(((R0[0])>>>(8*(3-i)))&0xff);
-		  	outData[4+i ] = (byte)(((R1[0])>>>(8*(3-i)))&0xff);
-		  	outData[8+i ] = (byte)(((L0[0])>>>(8*(3-i)))&0xff);
-		  	outData[12+i] = (byte)(((L1[0])>>>(8*(3-i)))&0xff);
+		  	outData[i   ] = (char)(((R0[0])>>>(8*(3-i)))&0xff);
+		  	outData[4+i ] = (char)(((R1[0])>>>(8*(3-i)))&0xff);
+		  	outData[8+i ] = (char)(((L0[0])>>>(8*(3-i)))&0xff);
+		  	outData[12+i] = (char)(((L1[0])>>>(8*(3-i)))&0xff);
 		  }
 		}
 
