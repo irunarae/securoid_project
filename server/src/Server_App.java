@@ -1,8 +1,15 @@
 
-import java.io.*;
-import java.net.*;
-import static java.lang.System.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 import java.sql.*;
+
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 
 public class Server_App {
 
@@ -49,7 +56,7 @@ public class Server_App {
 			String rcv_packet;
 			String rcv_data;
 
-			User user1 = null;
+			//User user1 = null;
 			//temp user
 			int cnt = 0;
 			
@@ -82,8 +89,8 @@ public class Server_App {
 				
 				if(rcv_type == 0){
 					//tmp
-					String tmp_pass = "passwd";
-					String tmp_device_id = "1234567891011121";
+					String tmp_pass = "";
+					String tmp_device_id = "";
 					try{
 						byte deviceKey[] = tmp_device_id.getBytes("KSC5601");
 					}catch(UnsupportedEncodingException e){
@@ -97,34 +104,25 @@ public class Server_App {
 					String tmp_key = String.valueOf(pbUserKey);
 					
 					//sql query
-					/*
+					
 					try{
 						Statement stmt = conn.createStatement();
 						String resultQuery = "SELECT userpassword, device, key FROM securoid WHERE username = " + rcv_id;
 						ResultSet rq = stmt.executeQuery(resultQuery);
-						try{
-							while(rq.next()){
+						
+						while(rq.next()){
 							tmp_pass = rq.getString("userpassword");
 							tmp_device_id = rq.getString("device");
-							tmp_key = rq.getString("key");
-							}
-						}finally{
-							try{
-								rq.close();
-							}catch(Throwable ignore){
-								
-							}
 						}
-					}finally{
-						try{
-							Connection stmt;
-							stmt.close();
-						}
-						catch(Throwable ignore){
-						}
+						rq.close();
+						stmt.close();
+						
 					}
-					*/
-					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
+					catch(SQLException e){
+						System.err.println("SQL Error");
+					}
+					
+					User user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
 					
 					char[] decrypt_Input = new char[16];
 					char[] decrypt_Output = new char[16];
