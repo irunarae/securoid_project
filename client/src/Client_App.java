@@ -1,4 +1,4 @@
-	import java.io.*;
+import java.io.*;
 import java.net.*;
 import static java.lang.System.*;
 
@@ -75,6 +75,9 @@ public class Client_App {
 				
 				for(int k=0; k<16; k++)
 					passwd_Send+=passwd_Output[k];
+				
+				System.out.println("-------- Original Password : " + passwd_Send);
+				
 				
 				snd_packet = id + " " + String.valueOf(type) + " " + passwd_Send;
 
