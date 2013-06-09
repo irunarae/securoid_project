@@ -65,8 +65,8 @@ public class Client_App {
 				for(int k=0; k< passwd.length(); k++)
 					passwd_Input[k]=(byte)passwd.charAt(k);
 				
-				passwd_Input = passwd.getBytes();
-				System.out.println("==========passwd.getBytes length: " +passwd.getBytes());
+				
+				//System.out.println("==========passwd.getBytes length: " +passwd.getBytes().length);
 				
 				for(int k=passwd.length();k<16;k++){
 					passwd_Input[k]=0;//add padding to make 16 bytes. 
@@ -76,13 +76,13 @@ public class Client_App {
 				seed.SeedEncrypt(passwd_Input, pdwRoundKey, passwd_Output);
 				//passwd = seed_encrypt(device_id, passwd);
 				
-				for(int k=0; k<16; k++)
-					passwd_Send+=passwd_Output[k];
+				//for(int k=0; k<16; k++)
+				//	passwd_Send+=passwd_Output[k];
+				//System.out.println(passwd_Output.toString());
+				System.out.println("-------- Original Password : " + passwd_Output.toString());
 				
-				System.out.println("-------- Original Password : " + passwd_Send);
 				
-				
-				snd_packet = id + " " + String.valueOf(type) + " " + passwd_Send;
+				snd_packet = id + " " + String.valueOf(type) + " " + passwd_Output.toString();
 
 				pw.println(snd_packet);
 				type++;
