@@ -94,7 +94,7 @@ public class Server_App {
 
 				//type should be considered after
 				rcv_data = toks[2];
-				
+				System.out.println(rcv_data);
 				if(rcv_type == 0){
 					System.out.println("rcv_type_0_if_statement?");
 					//tmp
