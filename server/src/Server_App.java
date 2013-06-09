@@ -109,20 +109,25 @@ public class Server_App {
 						Statement stmt = conn.createStatement();
 						String resultQuery = "SELECT userpassword, device, key FROM securoid WHERE username = " + rcv_id + "";
 						ResultSet rq = stmt.executeQuery(resultQuery);
+						System.out.println("Successfully Query");
 						
-						while(rq.next()){
-							tmp_pass = rq.getString("userpassword");
-							tmp_device_id = rq.getString("device");
-							System.out.println(tmp_pass);
-							System.out.println(tmp_device_id);
-							
+						try{
+							while(rq.next()){
+								tmp_pass = rq.getString("userpassword");
+								tmp_device_id = rq.getString("device");
+								System.out.println(tmp_pass);
+								System.out.println(tmp_device_id);
+							}
+						}
+						catch(Exception ex){
+							System.out.println("SQL Error_1");
 						}
 						rq.close();
 						stmt.close();
 						
 					}
 					catch(SQLException e){
-						System.err.println("SQL Error");
+						System.err.println("SQL Error_2");
 					}
 					
 					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
