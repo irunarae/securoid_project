@@ -168,6 +168,7 @@ public class Server_App {
 					if(!rcv_pass.equals(user1.passwd)){
 						//invalid user
 						snd_packet = user1.id + " " + "4";
+						System.out.println("invalid user");
 					}
 					else{
 						//valid user
