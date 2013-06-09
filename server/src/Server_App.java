@@ -146,7 +146,7 @@ public class Server_App {
 					}
 					
 					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
-					
+					System.out.println("Here?1");
 					char[] decrypt_Input = new char[16];
 					char[] decrypt_Output = new char[16];
 					
@@ -156,12 +156,12 @@ public class Server_App {
 					for(int k=rcv_data.length(); k<16; k++)
 						decrypt_Input[k]= 0;
 					seed.SeedDecrypt(decrypt_Input, pdwRoundKey, decrypt_Output);
-					
+					System.out.println("Here?2");
 					String rcv_pass="";
 					
 					for(int k=0; k<16; k++)
 						rcv_pass += decrypt_Output[k];//= seed_decrypt(user1.device_id, rcv_data);
-					
+					System.out.println("Here?3");
 					//seed decryption for rcv_data(passwd) with user.device_id
 					if(!rcv_pass.equals(user1.passwd)){
 						//invalid user
@@ -184,6 +184,7 @@ public class Server_App {
 						snd_packet = user1.id + " " + "1" + " " + String.valueOf(r) + " " + otp_key;
 						pw.println(snd_packet);
 					}
+					System.out.println("Here?4");
 					//user
 				}
 				else if(rcv_type == "1"){
