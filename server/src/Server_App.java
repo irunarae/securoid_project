@@ -111,10 +111,7 @@ public class Server_App {
 						Statement stmt = conn.createStatement();
 						
 						System.out.println("Error point 2");
-						String resultQuery = "SELECT * FROM 'securoid' WHERE username = '" + rcv_id + "'";
-
-						System.out.println("Error point 3");
-						rq = stmt.executeQuery(resultQuery);
+						rq = stmt.executeQuery("SELECT * FROM 'securoid' WHERE 'username' = '" + rcv_id + "'");
 						
 						System.out.println("Successfully Query");
 
