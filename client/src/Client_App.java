@@ -269,7 +269,8 @@ public class Client_App {
 			SeedX seed = new SeedX();
 
 			String encrypted = new String(path);
-			String decrypted = encrypted.substring(0, encrypted.length() - 14);
+			String decrypted = encrypted.substring(0, encrypted.length() - 14) + ".jpg";
+			
 
 			in = new FileInputStream(encrypted);
 			out = new FileOutputStream(decrypted);
