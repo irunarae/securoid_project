@@ -150,6 +150,11 @@ public class Client_App {
 				success = true;
 				System.out.println("Got password : " + key);
 				System.out.println("Photo_Original_Key : " + byteArrayToHex(pbUserKey));
+				
+				String path = new String("C:/Users/Irunarae/Desktop/528491.jpg_encrypted.bmp");
+				decrypt_File(path, key);
+				
+				
 			}
 			else{
 				//OTP Failure
@@ -240,5 +245,44 @@ public class Client_App {
 		String key = hash.MD5(String.valueOf(DH_key));
 				
 		return key; 
+	}
+	
+	public static void decrypt_File(String path, String key) {
+		try {
+			FileInputStream in;
+			FileOutputStream out;
+			SeedX seed = new SeedX();
+
+			String encrypted = new String(path);
+			String decrypted = encrypted.substring(0, encrypted.length() - 14);
+
+			in = new FileInputStream(encrypted);
+			out = new FileOutputStream(decrypted);
+
+			byte[] unmask_Buf = new byte[3361];
+			byte[] buf = new byte[16];
+			byte[] pbPlain = new byte[16];
+			int pdwRoundKey[] = new int[32];
+			byte[] decrypt_Key = hexToByteArray(key);
+
+			for (int i = 0; i < 312; i++) {
+				in.read(unmask_Buf);
+			}
+			seed.SeedRoundKey(pdwRoundKey, decrypt_Key);
+			while ((in.read(buf)) != -1) {
+				seed.SeedDecrypt(buf, pdwRoundKey, pbPlain);
+				out.write(pbPlain);
+			}
+
+			in.close();
+			out.close();
+
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
