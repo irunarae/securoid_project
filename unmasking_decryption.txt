@@ -1,0 +1,36 @@
+public static void main(String[] args) {
+		FileInputStream in;
+		FileInputStream mask_In;
+		FileOutputStream out;
+
+		try {
+
+			String encrypted = new String("C:/masked.bmp_encrypted.bmp");
+			String decrypted = encrypted.substring(0, encrypted.length() - 14);
+
+			in = new FileInputStream(encrypted);
+			out = new FileOutputStream(decrypted);
+
+			byte[] unmask_Buf = new byte[3361];
+			byte[] buf = new byte[16];
+			byte[] pbPlain = new byte[16];
+			for (int i = 0; i < 312; i++) {
+				in.read(unmask_Buf);
+			}
+			seed.SeedRoundKey(pdwRoundKey, decrypt_Key);
+			while ((in.read(buf)) != -1) {
+				seed.SeedDecrypt(buf, pdwRoundKey, pbPlain);
+				out.write(pbPlain);
+			}
+
+			in.close();
+			out.close();
+
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
