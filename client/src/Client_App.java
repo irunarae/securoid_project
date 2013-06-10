@@ -84,7 +84,7 @@ public class Client_App {
 						
 			//type should be considered after
 			if(rcv_type==4){
-				JOptionPane.showMessageDialog(null, "Receive Type4");
+				JOptionPane.showMessageDialog(null, "Can not find User information");
 				break;
 			} else {
 				rcv_data = toks[2];
