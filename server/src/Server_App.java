@@ -88,7 +88,6 @@ public class Server_App {
 				String[] toks = rcv_packet.split(" ");
 				rcv_id = toks[0];
 				rcv_type = Integer.parseInt(toks[1]);
-				byte deviceKey[] = new byte[16];
 
 				//type should be considered after
 				rcv_data = toks[2];
@@ -99,7 +98,7 @@ public class Server_App {
 					String tmp_pass = "";
 					String tmp_device_id = "";
 					
-					deviceKey = tmp_device_id.getBytes("KSC5601");
+					byte[] deviceKey = tmp_device_id.getBytes("KSC5601");
 					
 					
 					byte pbUserKey[] = {(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
