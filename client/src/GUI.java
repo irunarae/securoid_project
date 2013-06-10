@@ -2,6 +2,7 @@ import java.io.*;
 import java.awt.dnd.*;
 import java.awt.datatransfer.*;
 import javax.swing.*;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -17,7 +18,7 @@ public class GUI extends JFrame implements DropTargetListener{
     private JLabel Image_label;
     private JPasswordField passwordField;
     private JTextField textField;
-   
+    private boolean Path_flag = false;
     public GUI(){
         super("Drag & Drop");
         setResizable(false);
@@ -83,20 +84,27 @@ public class GUI extends JFrame implements DropTargetListener{
         btnNewButton.setIcon(new ImageIcon(GUI.class.getResource("key.jpg")));
         btnNewButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-				if (textField.getText().length() > 0
-						&& passwordField.getPassword().length > 0) {
-					// -------------------------------------------------------------------------------
-					// Click Event (Main event write here)
-					System.out.println("Clicked");
-					Client_App CA = new Client_App();
-					try {
-						CA.Execute(textField.getText(), new String(
-								passwordField.getPassword()), editor.getText());
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+        		if(!Path_flag){
+    				JOptionPane.showMessageDialog(null, "Drop your Photo first");
+        		}
+        		else{
+					if (textField.getText().length() > 0 && passwordField.getPassword().length > 0) {
+						// Click Event (Main event write here)
+						System.out.println("Clicked");
+						Client_App CA = new Client_App();
+						try {
+							CA.Execute(textField.getText(), new String(
+									passwordField.getPassword()), editor
+									.getText());
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
-				}
+					else{
+						JOptionPane.showMessageDialog(null, "ID, Password can not be blank");
+					}
+        		}
 			}
         });
         
@@ -165,6 +173,7 @@ public class GUI extends JFrame implements DropTargetListener{
                 Image_label.setIcon(Image);
                 
                 editor.setText(file.getPath());		// ImagePath. Decryption reference
+                Path_flag = true;
                                 
             }catch(Exception e){
                 e.printStackTrace();
