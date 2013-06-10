@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -65,12 +66,11 @@ public class Encryption extends Activity{
 				(byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F};
 				byte pbCipher[] = new byte[16];
 				byte[] buf = new byte[16];
-				String encrypted = new String(real_Uri);
+				String encrypted = new String(getRandomString(6) + "_encrypted.bmp");
 				
 				seedx.SeedRoundKey(pdwRoundKey, pbUserKey);		
 				
 				FileInputStream in;
-				FileInputStream mask_In;
 				FileOutputStream out;
 				
 				//Encryption
@@ -94,7 +94,7 @@ public class Encryption extends Activity{
 					}
 					stream.close();
 					
-					if((in.read(buf))!=-1){
+					while((in.read(buf))!=-1){
 						Log.e(in.read(buf)+"",buf.length+"/"+buf);
 						seedx.SeedEncrypt(buf,pdwRoundKey,pbCipher);
 						out.write(pbCipher);
@@ -131,5 +131,19 @@ public class Encryption extends Activity{
 		}
 		startManagingCursor(c);
 		return fullPath;
+	}
+	private static String getRandomString(int length)
+	{
+	  StringBuffer buffer = new StringBuffer();
+	  Random random = new Random();
+	 
+	  String chars[] = 
+	    "a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,_,0,1,2,3,4,5,6,7,8,9".split(",");
+	 
+	  for (int i=0 ; i<length ; i++)
+	  {
+	    buffer.append(chars[random.nextInt(chars.length)]);
+	  }
+	  return buffer.toString();
 	}
 }
