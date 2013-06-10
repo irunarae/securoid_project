@@ -85,7 +85,7 @@ public class Encryption extends Activity{
 					ByteArrayOutputStream stream = new ByteArrayOutputStream();
 					bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
 					byte[] byteArray = stream.toByteArray();
-										
+					
 					if(stream.size()!=0)
 						out.write(byteArray);
 					else{

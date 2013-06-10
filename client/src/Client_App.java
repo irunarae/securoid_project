@@ -275,15 +275,15 @@ public class Client_App {
 			in = new FileInputStream(encrypted);
 			out = new FileOutputStream(decrypted);
 
-			byte[] unmask_Buf = new byte[3361];
+			byte[] unmask_Buf = new byte[62682];
 			byte[] buf = new byte[16];
 			byte[] pbPlain = new byte[16];
 			int pdwRoundKey[] = new int[32];
 			byte[] decrypt_Key = hexToByteArray(key);
 
-			for (int i = 0; i < 312; i++) {
-				in.read(unmask_Buf);
-			}
+			
+			in.read(unmask_Buf);
+			
 			seed.SeedRoundKey(pdwRoundKey, decrypt_Key);
 			while ((in.read(buf)) != -1) {
 				seed.SeedDecrypt(buf, pdwRoundKey, pbPlain);
