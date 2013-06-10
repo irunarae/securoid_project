@@ -234,7 +234,7 @@ public class Server_App {
 						snd_packet = user1.id + " " + "2" + " " + tmp_key; 
 						pw.println(snd_packet);
 						System.out.println("this is has Success log");
-						System.out.println(tmp_key.getBytes());
+						System.out.println(tmp_key);
 
 					}
 					

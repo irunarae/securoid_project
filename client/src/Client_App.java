@@ -149,7 +149,7 @@ public class Client_App {
 				//finally we get the key for decryption
 				success = true;
 				System.out.println("Got password : " + key);
-				System.out.println("Photo_Original_Key : " + pbUserKey );
+				System.out.println("Photo_Original_Key : " + String.valueOf(pbUserKey));
 			}
 			else{
 				//OTP Failure
