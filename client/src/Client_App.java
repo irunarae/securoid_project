@@ -152,6 +152,7 @@ public class Client_App {
 				snd_packet = id + " " + String.valueOf(type) + " " + hashed_key;
 				pw.println(snd_packet);
 				type++;
+				System.out.println("Now Securoid enter rcv_type1");
 			}
 			else if(rcv_type == 2){
 				//OTP Authentication completed
