@@ -34,7 +34,9 @@ public class Server_App {
 				System.out.println(se.getMessage());
 			}
 			//connection with sql server
-		
+			
+			while(true){
+			
 			System.out.println("Waiting...");
 			ServerSocket ss = new ServerSocket(1988);
 			//making socket for server with port number 1988 which is my birth year kk sorry to the young
@@ -183,6 +185,7 @@ public class Server_App {
 						snd_packet = user1.id + " " + "4";
 						System.out.println("invalid user");
 						pw.println(snd_packet);
+						break;
 					}
 					else{
 						//valid user
@@ -228,6 +231,7 @@ public class Server_App {
 						snd_packet = user1.id + " " + "4";
 						System.out.println("this is has failed log");
 						pw.println(snd_packet);
+						break;
 					}
 					else{
 						String key = user1.key;
@@ -237,10 +241,11 @@ public class Server_App {
 						pw.println(snd_packet);
 						System.out.println("this is has Success log");
 						System.out.println("Photo_Decrpytion Key :" + tmp_key);
+						break;
 
 					}
 					
-					System.out.println("In server we entered Receive type 2");
+					
 				}
 			}
 			
@@ -249,7 +254,7 @@ public class Server_App {
 			sock.close();
 			ss.close();
 			//all should be closed after working
-	
+			}
 	}	
 	
 	public static int random_server_rnd_seed(){
