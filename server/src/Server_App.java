@@ -41,11 +41,6 @@ public class Server_App {
 			PrintWriter pw;
 			
 			while(true){
-			
-				pw.close();
-				br.close();
-				sock.close();
-				ss.close();
 				
 			System.out.println("Waiting...");
 			
