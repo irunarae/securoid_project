@@ -85,7 +85,7 @@ public class Encryption extends Activity{
 					ByteArrayOutputStream stream = new ByteArrayOutputStream();
 					bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
 					byte[] byteArray = stream.toByteArray();
-										/*
+										
 					if(stream.size()!=0)
 						out.write(byteArray);
 					else{
@@ -93,7 +93,7 @@ public class Encryption extends Activity{
 						finish();
 					}
 					stream.close();
-					*/
+					
 					if((in.read(buf))!=-1){
 						Log.e(in.read(buf)+"",buf.length+"/"+buf);
 						seedx.SeedEncrypt(buf,pdwRoundKey,pbCipher);
