@@ -224,7 +224,7 @@ public class Server_App {
 					String rcv_hash = rcv_data;
 					//rcv_hash = seed_decrypt(device_id, rcv_hash);
 					
-					if(rcv_hash != tmp_hash){
+					if(!rcv_hash.equals(tmp_hash)){
 						//invalid user
 						snd_packet = user1.id + " " + "4"; 
 					}
