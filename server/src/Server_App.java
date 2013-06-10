@@ -35,13 +35,19 @@ public class Server_App {
 			}
 			//connection with sql server
 			
+			ServerSocket ss = null;
+			Socket sock = null;
+			BufferedReader br = null;
+			PrintWriter pw = null;
+			
 			while(true){
 			
 			System.out.println("Waiting...");
-			ServerSocket ss = new ServerSocket(1988);
+			
+			ss = new ServerSocket(1988);
 			//making socket for server with port number 1988 which is my birth year kk sorry to the young
 			
-			Socket sock = ss.accept();
+			sock = ss.accept();
 			//wait until completion of making connection with client
 			System.out.println("Server has connected "+sock.getInetAddress()+
 					"to the client with port number "+sock.getLocalPort());
@@ -50,9 +56,9 @@ public class Server_App {
 			//connection partition completed
 			
 			
-			BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+			br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			//buffered reader which gets messages from socket
-			PrintWriter pw = new PrintWriter(sock.getOutputStream(), true);
+			pw = new PrintWriter(sock.getOutputStream(), true);
 			//print writer which sends messages via socket
 			
 			String snd_packet;
@@ -70,7 +76,15 @@ public class Server_App {
 				snd_packet = "";
 				
 				if(cnt > 10000000){
-
+					pw.close();
+					br.close();
+					sock.close();
+					ss.close();
+					
+					pw = null;
+					br = null;
+					sock = null;
+					ss = null;
 					//all should be closed after working
 					//hi
 					System.out.println("Connection for user1 is going to be closed and new connection will be held");
@@ -253,10 +267,6 @@ public class Server_App {
 					
 				}
 			}
-			pw.close();
-			br.close();
-			sock.close();
-			ss.close();
 			}
 	}	
 	
