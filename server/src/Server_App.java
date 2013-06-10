@@ -164,6 +164,8 @@ public class Server_App {
 					for(int k=0; k<16; k++)
 						rcv_pass += decrypt_Output[k];//= seed_decrypt(user1.device_id, rcv_data);
 					System.out.println("Here?3");
+					System.out.println("rcvd password(decrypted) : " + rcv_pass + " length : " + rcv_pass.length());
+					System.out.println("user1.pass : " + user1.passwd + "length : " + user1.passwd.length());
 					//seed decryption for rcv_data(passwd) with user.device_id
 					if(!rcv_pass.equals(user1.passwd)){
 						//invalid user
