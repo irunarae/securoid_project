@@ -92,15 +92,21 @@ public class Server_App {
 				//type should be considered after
 				rcv_data = toks[2];
 				
+				
 				if(rcv_type == 0){
+					int client_tmp_seed = Integer.parseInt(rcv_data);
+					//You should do the seed_key generate operation in here!!!!!!!!!!!!!!!!!!!!!!!!!!
+					
+					int tmp_seed = random_tmp_seed();
+					
+					snd_packet = rcv_id + " " + "0" + " " + tmp_seed;
+					pw.println(snd_packet);
+				}
+				else if(rcv_type == 1){
 					System.out.println("rcv_type_0_if_statement?");
 					//tmp
 					String tmp_pass = "";
 					String tmp_device_id = "";
-					
-					
-					
-					
 					
 					byte pbUserKey[] = {(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
 							(byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07,
@@ -207,7 +213,7 @@ public class Server_App {
 					System.out.println("Here?4");
 					//user
 				}
-				else if(rcv_type == 1){
+				else if(rcv_type == 2){
 					//user null check should be done
 					
 					String tmp;
@@ -235,10 +241,10 @@ public class Server_App {
 						
 						snd_packet = user1.id + " " + "2" + " " + tmp_key; 
 						pw.println(snd_packet);
-						System.out.println("this is has Success log :" + key);
+						System.out.println("this is has Success log");
 					}
 					
-					System.out.println("In server we entered Receive type 1");
+					System.out.println("In server we entered Receive type 2");
 				}
 			}
 			
@@ -250,6 +256,16 @@ public class Server_App {
 	
 	}	
 	
+	public static int random_tmp_seed(){
+		int r;
+		int max = 100000;
+		int min = 1000;
+		
+		r = (int)(Math.random()*(max-min+1))+min;
+		
+		return r;
+	}//for handshake 0(sharing key)
+	
 	public static int random_r(){
 		int r;
 		int max = 1000;
@@ -258,7 +274,7 @@ public class Server_App {
 		r = (int)(Math.random()*(max-min+1))+min;
 		
 		return r;
-	}
+	}//will use it for handshake 2(otp)
 	
 	public static String random_otp_key(){
 		char[] tmp = new char[16];

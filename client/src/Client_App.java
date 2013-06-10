@@ -58,6 +58,57 @@ public class Client_App {
 				break;
 			
 			if(type == 0){
+				
+				int tmp_seed;
+				tmp_seed = random_tmp_seed();
+				
+				snd_packet = id + " " + String.valueOf(type) + " " + tmp_seed;
+				pw.println(snd_packet);
+				
+				type++;
+				
+			}//first handshake
+			
+			rcv_packet = br.readLine();
+			if(rcv_packet == null)
+				continue;
+			
+			System.out.println(rcv_packet);
+			System.out.println("Securoid here-----------------");
+			//for test
+			
+			String[] toks = rcv_packet.split(" ");
+			rcv_id = toks[0];
+			
+			System.out.println("rcv_id : " + rcv_id);
+			System.out.println("id : " + id);
+			
+			
+			if(!rcv_id.equals(id))
+				continue;
+			
+			rcv_type = Integer.parseInt(toks[1]);
+			
+			
+			System.out.println("Now Receive type : " + rcv_type);
+			
+			
+			//type should be considered after
+			rcv_data = toks[2];
+			
+			//System.out.println("Received Test Data : toks[2]" + toks[2]);
+			//System.out.println("Received Test Data : toks[3]" + toks[3]);
+			//System.out.println("Received Test Data : rcv_datas2" + rcv_data2);
+			
+			
+			if(toks.length>=4 && toks[3] != null)
+				rcv_data2 = toks[3];
+			
+			if(rcv_type == 0){
+				//TODO: 
+				int server_tmp_seed = Integer.parseInt(rcv_data);
+				//You should do the seed_key generate operation in here!!!!!!!!!!!!!!!!!!!!!!!!!!
+				
 				byte[] passwd_Input = new byte[16];
 				byte[] passwd_Output= new byte[16];
 				String passwd_Hash="";
@@ -114,43 +165,7 @@ public class Client_App {
 				//type 0 is actual login process
 				//initial sending
 			}
-			
-			rcv_packet = br.readLine();
-			if(rcv_packet == null)
-				continue;
-			
-			System.out.println(rcv_packet);
-			System.out.println("Securoid here-----------------");
-			//for test
-			
-			String[] toks = rcv_packet.split(" ");
-			rcv_id = toks[0];
-			
-			System.out.println("rcv_id : " + rcv_id);
-			System.out.println("id : " + id);
-			
-			
-			if(!rcv_id.equals(id))
-				continue;
-			
-			rcv_type = Integer.parseInt(toks[1]);
-			
-			
-			System.out.println("Now Receive type : " + rcv_type);
-			
-			
-			//type should be considered after
-			rcv_data = toks[2];
-			
-			//System.out.println("Received Test Data : toks[2]" + toks[2]);
-			//System.out.println("Received Test Data : toks[3]" + toks[3]);
-			//System.out.println("Received Test Data : rcv_datas2" + rcv_data2);
-			
-			
-			if(toks.length>=4 && toks[3] != null)
-				rcv_data2 = toks[3];
-			
-			if(rcv_type == 1){
+			else if(rcv_type == 1){
 				//OTP Process
 				r = Integer.parseInt(rcv_data);
 				//r = seed_decrypt(device_id, r);
@@ -193,6 +208,18 @@ public class Client_App {
 		sock.close();
 		//all should be closed after working
 	}
+	
+	public static int random_tmp_seed(){
+		int r;
+		int max = 100000;
+		int min = 1000;
+		
+		r = (int)(Math.random()*(max-min+1))+min;
+		
+		return r;
+	}//for handshake 0(sharing key)
+	
+	
 	// hex to byte[]
 	public static byte[] hexToByteArray(String hex) {
 	    if (hex == null || hex.length() == 0) {
