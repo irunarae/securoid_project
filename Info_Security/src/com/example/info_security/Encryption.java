@@ -95,7 +95,6 @@ public class Encryption extends Activity{
 					stream.close();
 					
 					while((in.read(buf))!=-1){
-						Log.e(in.read(buf)+"",buf.length+"/"+buf);
 						seedx.SeedEncrypt(buf,pdwRoundKey,pbCipher);
 						out.write(pbCipher);
 					}
