@@ -76,7 +76,7 @@ public class Server_App {
 				rcv_packet = br.readLine();
 				System.out.println("=========TESTING2==========");
 				if(rcv_packet == null){
-					cnt++;
+					System.out.println(cnt++);
 					continue;
 				}
 				
