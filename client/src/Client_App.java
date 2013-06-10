@@ -125,6 +125,11 @@ public class Client_App {
 			
 			String[] toks = rcv_packet.split(" ");
 			rcv_id = toks[0];
+			
+			System.out.println("rcv_id : " + rcv_id);
+			System.out.println("id : " + id);
+			
+			
 			if(rcv_id != id)
 				continue;
 			rcv_type = Integer.parseInt(toks[1]);
