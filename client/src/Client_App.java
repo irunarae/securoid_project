@@ -6,7 +6,7 @@ public class Client_App {
 	
 	private static int alpha = 456;
 	private static int p = 6732;
-	private static int tmp_seed;
+	private static int client_rnd_seed;
 	private static String Secret_key;
 	
 	public static void main(String[] args) throws IOException{
@@ -61,9 +61,9 @@ public class Client_App {
 			
 			if(type == 0){
 				
-				tmp_seed = random_tmp_seed();
+				client_rnd_seed = random_client_rnd_seed();
 				
-				snd_packet = id + " " + String.valueOf(type) + " " + tmp_seed;
+				snd_packet = id + " " + String.valueOf(type) + " " + client_rnd_seed;
 				pw.println(snd_packet);
 				
 				type++;
@@ -90,13 +90,13 @@ public class Client_App {
 			
 			if(rcv_type == 0){
 				//TODO: 
-				int server_tmp_seed = Integer.parseInt(rcv_data);
+				int server_rnd_seed = Integer.parseInt(rcv_data);
 				//You should do the seed_key generate operation in here!!!!!!!!!!!!!!!!!!!!!!!!!!
-				Secret_key = Diffie_Hellman_Key(server_tmp_seed,tmp_seed);
+				Secret_key = Diffie_Hellman_Key(server_rnd_seed,client_rnd_seed);
 								
 				//-------------------------------------------------------------------------------------------------------------------- Key generatioin check code start
-				System.out.println("server_tmp_seed : " + server_tmp_seed);
-				System.out.println("client_tmp_seed : " + tmp_seed);
+				System.out.println("server_rnd_seed : " + server_rnd_seed);
+				System.out.println("client_rnd_seed : " + client_rnd_seed);
 				System.out.println("generated_Key : " + Secret_key);
 				//-------------------------------------------------------------------------------------------------------------------- Key generatioin check code end
 				
@@ -166,7 +166,7 @@ public class Client_App {
 		//all should be closed after working
 	}
 	
-	public static int random_tmp_seed(){
+	public static int random_client_rnd_seed(){
 		int r;
 		int max = 100000;
 		int min = 1000;
