@@ -154,21 +154,27 @@ public class Server_App {
 					System.out.println("------------------- Error Detector : " + rcv_data.length());
 					System.out.println("------------------- RCV_DATA ORIGINAL : " + rcv_data);
 					
-					for(int k=0; k<rcv_data.length(); k++)
-						decrypt_Input[k]= (byte)rcv_data.charAt(k);
+					//for(int k=0; k<rcv_data.length(); k++)
+					//	decrypt_Input[k]= (byte)rcv_data.charAt(k);
+					Securoid_Hashing hash = new Securoid_Hashing();
+					decrypt_Input = new java.math.BigInteger(rcv_data, 16).toByteArray();
 					
 					seed.SeedDecrypt(decrypt_Input, pdwRoundKey, decrypt_Output);
+					
+					
 					System.out.println("Here?2");
 					String rcv_pass="";
 					
-					for(int k=0; k<16; k++)
-						rcv_pass += decrypt_Output[k];//= seed_decrypt(user1.device_id, rcv_data);
+					//for(int k=0; k<16; k++)
+					//	rcv_pass += decrypt_Output[k];//= seed_decrypt(user1.device_id, rcv_data);
+					rcv_pass = new java.math.BigInteger(decrypt_Output).toString(16);
+					
 					System.out.println("Here?3");
-					System.out.println("rcvd password(decrypted) : " + rcv_pass + " length : " + rcv_pass.length());
-					System.out.println("user1.pass : " + user1.passwd + "length : " + user1.passwd.length());
-					System.out.println("rcv_pass.equals(user1.passwd) : " + rcv_pass.equals(user1.passwd));
+					//System.out.println("rcvd password(decrypted) : " + rcv_pass + " length : " + rcv_pass.length());
+					//System.out.println("user1.pass : " + user1.passwd + "length : " + user1.passwd.length());
+					//System.out.println("rcv_pass.equals(user1.passwd) : " + rcv_pass.equals(user1.passwd));
 					//seed decryption for rcv_data(passwd) with user.device_id
-					if(!rcv_pass.equals(user1.passwd)){
+					if(!rcv_pass.equals(hash.MD5(user1.passwd))){
 						//invalid user
 						snd_packet = user1.id + " " + "4";
 						System.out.println("invalid user");

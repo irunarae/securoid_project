@@ -60,17 +60,23 @@ public class Client_App {
 			if(type == 0){
 				byte[] passwd_Input = new byte[16];
 				byte[] passwd_Output= new byte[16];
+				String passwd_Hash="";
 				String passwd_Send="";
 				System.out.println("==============passwd length : " + passwd.length());
-				for(int k=0; k< passwd.length(); k++)
-					passwd_Input[k]=(byte)passwd.charAt(k);
+				
+				Securoid_Hashing hash = new Securoid_Hashing();
+				passwd_Hash = hash.MD5(passwd);
+				passwd_Input = new java.math.BigInteger(passwd_Hash, 16).toByteArray();
+				
+				//for(int k=0; k< passwd.length(); k++)
+				//	passwd_Input[k]=(byte)passwd.charAt(k);
 				
 				
 				//System.out.println("==========passwd.getBytes length: " +passwd.getBytes().length);
 				
-				for(int k=passwd.length();k<16;k++){
-					passwd_Input[k]=0;//add padding to make 16 bytes. 
-				}
+				//for(int k=passwd.length();k<16;k++){
+				//	passwd_Input[k]=0;//add padding to make 16 bytes. 
+				//}
 				
 				seed.SeedRoundKey(pdwRoundKey, deviceKey);
 				seed.SeedEncrypt(passwd_Input, pdwRoundKey, passwd_Output);
@@ -78,11 +84,12 @@ public class Client_App {
 				
 				//for(int k=0; k<16; k++)
 				//	passwd_Send+=passwd_Output[k];
-				//System.out.println(passwd_Output.toString());
-				System.out.println("-------- Original Password : " + passwd_Output.toString());
+				passwd_Send = new java.math.BigInteger(passwd_Output).toString(16);
+
+				System.out.println("-------- Original Password : " + passwd_Send);
 				
 				
-				snd_packet = id + " " + String.valueOf(type) + " " + passwd_Output.toString();
+				snd_packet = id + " " + String.valueOf(type) + " " + passwd_Send;
 
 				pw.println(snd_packet);
 				type++;
