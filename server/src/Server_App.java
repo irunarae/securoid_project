@@ -72,12 +72,14 @@ public class Server_App {
 				if(cnt > 10000000)
 					break;
 				//after 100 check terminate
-				
+				System.out.println("=========TESTING1==========");
 				rcv_packet = br.readLine();
+				System.out.println("=========TESTING2==========");
 				if(rcv_packet == null){
 					cnt++;
 					continue;
 				}
+				
 				
 				cnt = 0;
 				System.out.println(rcv_packet);

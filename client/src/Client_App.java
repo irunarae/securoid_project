@@ -85,7 +85,7 @@ public class Client_App {
 				//for(int k=0; k<16; k++)
 				//	passwd_Send+=passwd_Output[k];
 				passwd_Send = new java.math.BigInteger(passwd_Output).toString(16);
-
+				System.out.println("=========passwd_Send.length : " + passwd_Send.length());
 				System.out.println("-------- Original Password : " + passwd_Send);
 				
 				
