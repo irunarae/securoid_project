@@ -158,6 +158,7 @@ public class Client_App {
 				key = rcv_data;//=seed_decrypt(device_id, rcv_data);
 				//finally we get the key for decryption
 				success = true;
+				System.out.println("Got password : " + key);
 			}
 			else{
 				//OTP Failure
