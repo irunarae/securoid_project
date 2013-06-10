@@ -111,7 +111,7 @@ public class Server_App {
 							(byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07,
 							(byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B,
 							(byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F};
-					String tmp_key = String.valueOf(pbUserKey);
+					String tmp_key = byteArrayToHex(pbUserKey);
 					
 					//sql query
 					System.out.println("Here");
@@ -234,7 +234,7 @@ public class Server_App {
 						snd_packet = user1.id + " " + "2" + " " + tmp_key; 
 						pw.println(snd_packet);
 						System.out.println("this is has Success log");
-						System.out.println(tmp_key);
+						System.out.println("Photo_Decrpytion Key :" + tmp_key);
 
 					}
 					
