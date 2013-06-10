@@ -94,10 +94,11 @@ public class Client_App {
 				//You should do the seed_key generate operation in here!!!!!!!!!!!!!!!!!!!!!!!!!!
 				Secret_key = Diffie_Hellman_Key(server_tmp_seed,tmp_seed);
 								
-				//-------------------------------------------------------------------------------------------------------------------- Key generatioin check code
+				//-------------------------------------------------------------------------------------------------------------------- Key generatioin check code start
 				System.out.println("server_tmp_seed : " + server_tmp_seed);
 				System.out.println("client_tmp_seed : " + tmp_seed);
 				System.out.println("generated_Key : " + Secret_key);
+				//-------------------------------------------------------------------------------------------------------------------- Key generatioin check code end
 				
 				String passwd_Hash="";
 				String passwd_Send="";
