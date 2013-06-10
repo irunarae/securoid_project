@@ -76,7 +76,7 @@ public class Server_App {
 					sock.close();
 					ss.close();
 					//all should be closed after working
-					
+					//hi
 					System.out.println("Connection for user1 is going to be closed and new connection will be held");
 					break;
 				}
