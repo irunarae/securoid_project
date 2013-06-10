@@ -171,6 +171,8 @@ public class Server_App {
 					//	rcv_pass += decrypt_Output[k];//= seed_decrypt(user1.device_id, rcv_data);
 					rcv_pass = byteArrayToHex(decrypt_Output);
 					
+					System.out.println("RCV_PASS returned : " + rcv_pass);
+					
 					System.out.println("Here?3");
 					//System.out.println("rcvd password(decrypted) : " + rcv_pass + " length : " + rcv_pass.length());
 					//System.out.println("user1.pass : " + user1.passwd + "length : " + user1.passwd.length());
