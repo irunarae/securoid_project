@@ -235,6 +235,8 @@ public class Server_App {
 						snd_packet = user1.id + " " + "2" + " " + tmp_key; 
 						pw.println(snd_packet);
 					}
+					
+					System.out.println("In server we entered Receive type 1");
 				}
 			}
 			
