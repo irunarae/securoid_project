@@ -66,7 +66,7 @@ public class Encryption extends Activity{
 				(byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F};
 				byte pbCipher[] = new byte[16];
 				byte[] buf = new byte[16];
-				String encrypted = new String(getRandomString(6) + "_encrypted.bmp");
+				String encrypted = new String(real_Uri + "_encrypted.bmp");
 				
 				seedx.SeedRoundKey(pdwRoundKey, pbUserKey);		
 				
