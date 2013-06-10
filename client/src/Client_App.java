@@ -120,6 +120,7 @@ public class Client_App {
 				continue;
 			
 			System.out.println(rcv_packet);
+			System.out.println("Securoid here-----------------");
 			//for test
 			
 			String[] toks = rcv_packet.split(" ");
@@ -127,6 +128,11 @@ public class Client_App {
 			if(rcv_id != id)
 				continue;
 			rcv_type = Integer.parseInt(toks[1]);
+			
+			
+			System.out.println("Now Receive type : " + rcv_type);
+			
+			
 			//type should be considered after
 			rcv_data = toks[2];
 			if(toks[3] != null)
