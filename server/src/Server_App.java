@@ -69,8 +69,17 @@ public class Server_App {
 			while(true){
 				snd_packet = "";
 				
-				if(cnt > 10000000)
+				if(cnt > 10000000){
+
+					pw.close();
+					br.close();
+					sock.close();
+					ss.close();
+					//all should be closed after working
+					
+					System.out.println("Connection for user1 is going to be closed and new connection will be held");
 					break;
+				}
 				//after 100 check terminate
 				//System.out.println("=========TESTING1==========");
 				rcv_packet = br.readLine();
@@ -249,11 +258,6 @@ public class Server_App {
 				}
 			}
 			
-			pw.close();
-			br.close();
-			sock.close();
-			ss.close();
-			//all should be closed after working
 			}
 	}	
 	
