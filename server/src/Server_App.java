@@ -226,7 +226,8 @@ public class Server_App {
 					
 					if(!rcv_hash.equals(tmp_hash)){
 						//invalid user
-						snd_packet = user1.id + " " + "4"; 
+						snd_packet = user1.id + " " + "4";
+						System.out.println("this is has failed log");
 					}
 					else{
 						String key = user1.key;
@@ -234,6 +235,7 @@ public class Server_App {
 						
 						snd_packet = user1.id + " " + "2" + " " + tmp_key; 
 						pw.println(snd_packet);
+						System.out.println("this is has Success log");
 					}
 					
 					System.out.println("In server we entered Receive type 1");
