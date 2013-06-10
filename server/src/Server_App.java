@@ -99,7 +99,7 @@ public class Server_App {
 					String tmp_pass = "";
 					String tmp_device_id = "";
 					
-					deviceKey[] = tmp_device_id.getBytes("KSC5601");
+					deviceKey = tmp_device_id.getBytes("KSC5601");
 					
 					
 					byte pbUserKey[] = {(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
