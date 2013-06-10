@@ -158,7 +158,7 @@ public class Server_App {
 						}
 						rq.close();
 						stmt.close();
-						conn.close();
+						//conn.close();
 					}
 					catch(SQLException ex){
 						System.err.println("SQL Error_2");
