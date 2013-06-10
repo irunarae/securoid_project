@@ -71,10 +71,6 @@ public class Server_App {
 				
 				if(cnt > 10000000){
 
-					pw.close();
-					br.close();
-					sock.close();
-					ss.close();
 					//all should be closed after working
 					//hi
 					System.out.println("Connection for user1 is going to be closed and new connection will be held");
@@ -257,7 +253,10 @@ public class Server_App {
 					
 				}
 			}
-			
+			pw.close();
+			br.close();
+			sock.close();
+			ss.close();
 			}
 	}	
 	
