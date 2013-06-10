@@ -167,13 +167,14 @@ public class Client_App {
 					// String path = new
 					// String("C:/Users/Irunarae/Desktop/CTF/cube.png_encrypted.bmp");
 					decrypt_File(path, key);
+					JOptionPane.showMessageDialog(null, "Securoid Works Done!");
 
 				} else {
 					// OTP Failure
 					// restart?
 					type = 0;
 					cnt++;
-					JOptionPane.showMessageDialog(null, "aaa");
+					JOptionPane.showMessageDialog(null, "Test Massage");
 					// retry trois
 				}
 			}
