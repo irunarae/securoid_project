@@ -75,7 +75,7 @@ public class Server_App {
 			while(true){
 				snd_packet = "";
 				
-				if(cnt > 10000000){
+				if(cnt > 100){
 					
 					//all should be closed after working
 					//hi
