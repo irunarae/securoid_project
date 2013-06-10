@@ -98,7 +98,7 @@ public class Server_App {
 					String tmp_pass = "";
 					String tmp_device_id = "";
 					
-					byte[] deviceKey = new byte[16];
+					
 					
 					
 					
@@ -145,8 +145,8 @@ public class Server_App {
 					catch(SQLException ex){
 						System.err.println("SQL Error_2");
 					}
-					deviceKey = tmp_device_id.getBytes("KSC5601");
-					System.out.println("====tmp_device_id : " + tmp_device_id);
+					byte[] deviceKey = tmp_device_id.getBytes("KSC5601");
+					
 					System.out.println("Here?");
 					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
 					System.out.println("Here?1");
@@ -188,6 +188,7 @@ public class Server_App {
 					}
 					else{
 						//valid user
+						System.out.println("valid user!! Welcome!!");
 						int r = random_r();
 						String otp_key = random_otp_key();
 						//r, otp_key random generate
