@@ -12,8 +12,8 @@ import java.sql.*;
 
 
 public class Server_App {
-	private static int alpha = 456;
-	private static int p = 6732;
+	private static int alpha = 2521;
+	private static int p = 10859;
 	public static void main(String[] args) throws IOException
 	{
 			String Secret_key = null;

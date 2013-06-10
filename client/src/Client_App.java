@@ -4,8 +4,8 @@ import static java.lang.System.*;
 import javax.swing.JOptionPane;
 
 public class Client_App {
-	private static int alpha = 456;
-	private static int p = 6732;
+	private static int alpha = 2521;
+	private static int p = 10859;
 	private static int client_rnd_seed;
 	private static String Secret_key;
 	public Client_App(){};
