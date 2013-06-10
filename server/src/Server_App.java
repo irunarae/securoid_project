@@ -76,10 +76,7 @@ public class Server_App {
 				snd_packet = "";
 				
 				if(cnt > 10000000){
-					pw.close();
-					br.close();
-					sock.close();
-					ss.close();
+					
 					
 					pw = null;
 					br = null;
@@ -267,6 +264,10 @@ public class Server_App {
 					
 				}
 			}
+			pw.close();
+			br.close();
+			sock.close();
+			ss.close();
 			}
 	}	
 	
