@@ -130,8 +130,9 @@ public class Client_App {
 			System.out.println("id : " + id);
 			
 			
-			if(rcv_id != id)
+			if(!rcv_id.equals(id))
 				continue;
+			
 			rcv_type = Integer.parseInt(toks[1]);
 			
 			
