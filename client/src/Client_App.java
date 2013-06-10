@@ -141,6 +141,12 @@ public class Client_App {
 			
 			//type should be considered after
 			rcv_data = toks[2];
+			
+			System.out.println("Received Test Data : toks[2]" + toks[2]);
+			System.out.println("Received Test Data : toks[3]" + toks[3]);
+			System.out.println("Received Test Data : rcv_datas2" + rcv_data2);
+			
+			
 			if(toks[3] != null)
 				rcv_data2 = toks[3];
 			
