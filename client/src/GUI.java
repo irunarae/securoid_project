@@ -83,9 +83,21 @@ public class GUI extends JFrame implements DropTargetListener{
         btnNewButton.setIcon(new ImageIcon(GUI.class.getResource("key.jpg")));
         btnNewButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		//------------------------------------------------------------------------------- Click Event (Main event write here)
-        		System.out.println("Clicked");
-        	}
+				if (textField.getText().length() > 0
+						&& passwordField.getPassword().length > 0) {
+					// -------------------------------------------------------------------------------
+					// Click Event (Main event write here)
+					System.out.println("Clicked");
+					Client_App CA = new Client_App();
+					try {
+						CA.Execute(textField.getText(), new String(
+								passwordField.getPassword()), editor.getText());
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
         });
         
         // Layout setting (Done by WindowsBuilder)

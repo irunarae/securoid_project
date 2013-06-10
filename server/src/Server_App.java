@@ -92,14 +92,14 @@ public class Server_App {
 				
 				
 				if(rcv_type == 0){
-					int client_tmp_seed = Integer.parseInt(rcv_data);
+					int client_rnd_seed = Integer.parseInt(rcv_data);
 					//You should do the seed_key generate operation in here!!!!!!!!!!!!!!!!!!!!!!!!!!
-					int tmp_seed = random_tmp_seed();
+					int server_rnd_seed = random_server_rnd_seed();
 										
-					snd_packet = rcv_id + " " + "0" + " " + tmp_seed;
+					snd_packet = rcv_id + " " + "0" + " " + server_rnd_seed;
 					pw.println(snd_packet);
 					
-					Secret_key = Diffie_Hellman_Key(client_tmp_seed, tmp_seed);
+					Secret_key = Diffie_Hellman_Key(client_rnd_seed, server_rnd_seed);
 				}
 				else if(rcv_type == 1){
 					System.out.println("rcv_type_0_if_statement?");
@@ -212,13 +212,14 @@ public class Server_App {
 					int tmp_r;
 					tmp = user1.get_otp_key();
 					tmp_r = user1.get_r();
+					
 					Securoid_Hashing hash = new Securoid_Hashing();
 					
 					for(int i = 0 ; i < tmp_r ; i ++)
 						tmp = hash.MD5(tmp);
 					//with user's id, find the user's own r, otp_key from the user class
+
 					String tmp_hash = tmp;
-					
 					String rcv_hash = rcv_data;
 					//rcv_hash = seed_decrypt(device_id, rcv_hash);
 					
@@ -226,6 +227,7 @@ public class Server_App {
 						//invalid user
 						snd_packet = user1.id + " " + "4";
 						System.out.println("this is has failed log");
+						pw.println(snd_packet);
 					}
 					else{
 						String key = user1.key;
@@ -250,7 +252,7 @@ public class Server_App {
 	
 	}	
 	
-	public static int random_tmp_seed(){
+	public static int random_server_rnd_seed(){
 		int r;
 		int max = 100000;
 		int min = 1000;
