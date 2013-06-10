@@ -88,7 +88,7 @@ public class Server_App {
 				String[] toks = rcv_packet.split(" ");
 				rcv_id = toks[0];
 				rcv_type = Integer.parseInt(toks[1]);
-
+				byte deviceKey[] = new byte[16];
 
 				//type should be considered after
 				rcv_data = toks[2];
@@ -98,11 +98,9 @@ public class Server_App {
 					//tmp
 					String tmp_pass = "";
 					String tmp_device_id = "";
-					try{
-						byte deviceKey[] = tmp_device_id.getBytes("KSC5601");
-					}catch(UnsupportedEncodingException e){
-						e.printStackTrace();
-					}
+					
+					deviceKey[] = tmp_device_id.getBytes("KSC5601");
+					
 					
 					byte pbUserKey[] = {(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
 							(byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07,
@@ -160,6 +158,7 @@ public class Server_App {
 					//	decrypt_Input[k]= (byte)rcv_data.charAt(k);
 					Securoid_Hashing hash = new Securoid_Hashing();
 					decrypt_Input = hexToByteArray(rcv_data);
+					seed.SeedRoundKey(pdwRoundKey, deviceKey);
 					seed.SeedDecrypt(decrypt_Input, pdwRoundKey, decrypt_Output);
 					
 					
@@ -171,7 +170,6 @@ public class Server_App {
 					rcv_pass = byteArrayToHex(decrypt_Output);
 					
 					System.out.println("RCV_PASS returned : " + rcv_pass);
-					System.out.println("decrypted passwrod : " + decrypt_Output);
 					
 					System.out.println("Here?3");
 					//System.out.println("rcvd password(decrypted) : " + rcv_pass + " length : " + rcv_pass.length());
@@ -180,6 +178,7 @@ public class Server_App {
 					//seed decryption for rcv_data(passwd) with user.device_id
 					if(!rcv_pass.equals(hash.MD5(user1.passwd))){
 						//invalid user
+						System.out.println("passwd hash : " + hash.MD5(user1.passwd));
 						snd_packet = user1.id + " " + "4";
 						System.out.println("invalid user");
 						pw.println(snd_packet);
