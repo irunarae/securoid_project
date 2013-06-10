@@ -35,13 +35,18 @@ public class Server_App {
 			}
 			//connection with sql server
 			
-			ServerSocket ss = null;
-			Socket sock = null;
-			BufferedReader br = null;
-			PrintWriter pw = null;
+			ServerSocket ss;
+			Socket sock;
+			BufferedReader br;
+			PrintWriter pw;
 			
 			while(true){
 			
+				pw.close();
+				br.close();
+				sock.close();
+				ss.close();
+				
 			System.out.println("Waiting...");
 			
 			ss = new ServerSocket(1988);
@@ -77,11 +82,6 @@ public class Server_App {
 				
 				if(cnt > 10000000){
 					
-					
-					pw = null;
-					br = null;
-					sock = null;
-					ss = null;
 					//all should be closed after working
 					//hi
 					System.out.println("Connection for user1 is going to be closed and new connection will be held");
