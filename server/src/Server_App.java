@@ -98,7 +98,8 @@ public class Server_App {
 					String tmp_pass = "";
 					String tmp_device_id = "";
 					
-					byte[] deviceKey = tmp_device_id.getBytes("KSC5601");
+					byte[] deviceKey = new byte[16];
+					
 					
 					
 					byte pbUserKey[] = {(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
@@ -129,6 +130,7 @@ public class Server_App {
 							while(rq.next()){
 								tmp_pass = rq.getString(3);
 								tmp_device_id = rq.getString(4);
+								
 								System.out.println(tmp_pass);
 								System.out.println(tmp_device_id);
 							}
@@ -143,6 +145,7 @@ public class Server_App {
 					catch(SQLException ex){
 						System.err.println("SQL Error_2");
 					}
+					deviceKey = tmp_device_id.getBytes("KSC5601");
 					System.out.println("Here?");
 					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
 					System.out.println("Here?1");
