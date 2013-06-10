@@ -172,6 +172,7 @@ public class Server_App {
 						//invalid user
 						snd_packet = user1.id + " " + "4";
 						System.out.println("invalid user");
+						pw.println(snd_packet);
 					}
 					else{
 						//valid user
