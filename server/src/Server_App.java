@@ -12,9 +12,11 @@ import java.sql.*;
 
 
 public class Server_App {
-
+	private static int alpha = 456;
+	private static int p = 6732;
 	public static void main(String[] args) throws IOException
 	{
+			String Secret_key = null;
 			Connection conn = null;
 			Statement stmt = null;
 			ResultSet rq = null;
@@ -61,11 +63,7 @@ public class Server_App {
 			User user1 = null;
 			//temp user
 			int cnt = 0;
-			
-			SeedX seed = new SeedX();
-			int pdwRoundKey[] = new int[32];
-			//round key array for seed algorithm
-			
+						
 			while(true){
 				snd_packet = "";
 				
@@ -96,11 +94,12 @@ public class Server_App {
 				if(rcv_type == 0){
 					int client_tmp_seed = Integer.parseInt(rcv_data);
 					//You should do the seed_key generate operation in here!!!!!!!!!!!!!!!!!!!!!!!!!!
-					
 					int tmp_seed = random_tmp_seed();
-					
+										
 					snd_packet = rcv_id + " " + "0" + " " + tmp_seed;
 					pw.println(snd_packet);
+					
+					Secret_key = Diffie_Hellman_Key(client_tmp_seed, tmp_seed);
 				}
 				else if(rcv_type == 1){
 					System.out.println("rcv_type_0_if_statement?");
@@ -151,25 +150,18 @@ public class Server_App {
 					catch(SQLException ex){
 						System.err.println("SQL Error_2");
 					}
-					byte[] deviceKey = tmp_device_id.getBytes("KSC5601");
 					
 					System.out.println("Here?");
 					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
 					System.out.println("Here?1");
-					
-					byte[] decrypt_Input = new byte[16];
-					byte[] decrypt_Output = new byte[16];
 					                                                                                                                                                                                                                                                                                                                                                                                                         
 					System.out.println("------------------- Error Detector : " + rcv_data.length());
 					System.out.println("------------------- RCV_DATA ORIGINAL : " + rcv_data);
 					
-					//for(int k=0; k<rcv_data.length(); k++)
-					//	decrypt_Input[k]= (byte)rcv_data.charAt(k);
 					Securoid_Hashing hash = new Securoid_Hashing();
-					decrypt_Input = hexToByteArray(rcv_data);
-					seed.SeedRoundKey(pdwRoundKey, deviceKey);
-					seed.SeedDecrypt(decrypt_Input, pdwRoundKey, decrypt_Output);
 					
+					byte[] decrypt_Output = new byte[16];
+					decrypt_Output = SeedDecryption(hexToByteArray(rcv_data),hexToByteArray(Secret_key));
 					
 					System.out.println("Here?2");
 					String rcv_pass="";
@@ -317,6 +309,43 @@ public class Server_App {
 	        sb.append(hexNumber.substring(hexNumber.length() - 2));
 	    }
 	    return sb.toString();
+	}
+	
+
+	public static byte[] SeedEncryption(byte[] passwd_Input, byte[] encrypt_key) {
+		
+		byte[] passwd_Output= new byte[16];
+		int pdwRoundKey[] = new int[32];
+			
+		SeedX seed = new SeedX();
+		//round key array for seed algorithm
+				
+		seed.SeedRoundKey(pdwRoundKey, encrypt_key);
+		seed.SeedEncrypt(passwd_Input, pdwRoundKey, passwd_Output);
+		
+		return passwd_Output;
+	}
+	
+	public static byte[] SeedDecryption(byte[] decrypt_Input, byte[] decrypt_key) {
+		byte[] decrypt_Output= new byte[16];
+		int pdwRoundKey[] = new int[32];
+			
+		SeedX seed = new SeedX();
+		//round key array for seed algorithm
+				
+		seed.SeedRoundKey(pdwRoundKey, decrypt_key);
+		seed.SeedDecrypt(decrypt_Input, pdwRoundKey, decrypt_Output);
+		
+		return decrypt_Output;
+	}
+	
+	public static String Diffie_Hellman_Key(int key1, int key2){
+		double DH_key = Math.pow(Math.pow(alpha, key1),key2)%p;
+		
+		Securoid_Hashing hash = new Securoid_Hashing();
+		String key = hash.MD5(String.valueOf(DH_key));
+				
+		return key; 
 	}
 }
 

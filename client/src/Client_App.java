@@ -3,18 +3,24 @@ import java.net.*;
 import static java.lang.System.*;
 
 public class Client_App {
+	
+	private static int alpha = 456;
+	private static int p = 6732;
+	private static int tmp_seed;
+	private static String Secret_key;
+	
 	public static void main(String[] args) throws IOException{
 		System.out.println("Welcome to Securoid!");
 		
 		Socket sock = new Socket("14.63.198.240", 1988);
 		System.out.println("Attempt to make connection to address, 14.63.198.240 with port number 1988");
 		//making socket for client with temperature ip addr. and port number 1988 which i defined in socket_server class
-		
-		//System.out.println("Will be sent : "+s);
+				
 		PrintWriter pw = new PrintWriter(sock.getOutputStream(), true);
 		//print writer which sends messages via socket
 		BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		//buffered reader which gets messages from socket
+		
 		System.out.println("Success");
 		
 		String id = "securoid";
@@ -34,12 +40,9 @@ public class Client_App {
 		
 		String key = String.valueOf(pbUserKey);
 		
-		SeedX seed = new SeedX();
-		int pdwRoundKey[] = new int[32];
-		//round key array for seed algorithm
-		
 		//tmp initialization
 		//should get from the user's input or arguments
+		
 		String snd_packet = "";
 		byte data[] = new byte[16];
 
@@ -47,8 +50,7 @@ public class Client_App {
 		String rcv_id;
 		int rcv_type;
 		String rcv_data, rcv_data2 = "";
-		
-		
+				
 		Boolean success = false;
 		int cnt = 0;
 		//initial partition
@@ -59,7 +61,6 @@ public class Client_App {
 			
 			if(type == 0){
 				
-				int tmp_seed;
 				tmp_seed = random_tmp_seed();
 				
 				snd_packet = id + " " + String.valueOf(type) + " " + tmp_seed;
@@ -73,34 +74,17 @@ public class Client_App {
 			if(rcv_packet == null)
 				continue;
 			
-			System.out.println(rcv_packet);
-			System.out.println("Securoid here-----------------");
-			//for test
-			
 			String[] toks = rcv_packet.split(" ");
 			rcv_id = toks[0];
-			
-			System.out.println("rcv_id : " + rcv_id);
-			System.out.println("id : " + id);
-			
 			
 			if(!rcv_id.equals(id))
 				continue;
 			
 			rcv_type = Integer.parseInt(toks[1]);
-			
-			
-			System.out.println("Now Receive type : " + rcv_type);
-			
-			
+						
 			//type should be considered after
 			rcv_data = toks[2];
-			
-			//System.out.println("Received Test Data : toks[2]" + toks[2]);
-			//System.out.println("Received Test Data : toks[3]" + toks[3]);
-			//System.out.println("Received Test Data : rcv_datas2" + rcv_data2);
-			
-			
+						
 			if(toks.length>=4 && toks[3] != null)
 				rcv_data2 = toks[3];
 			
@@ -108,56 +92,27 @@ public class Client_App {
 				//TODO: 
 				int server_tmp_seed = Integer.parseInt(rcv_data);
 				//You should do the seed_key generate operation in here!!!!!!!!!!!!!!!!!!!!!!!!!!
+				Secret_key = Diffie_Hellman_Key(server_tmp_seed,tmp_seed);
+								
+				//-------------------------------------------------------------------------------------------------------------------- Key generatioin check code
+				System.out.println("server_tmp_seed : " + server_tmp_seed);
+				System.out.println("client_tmp_seed : " + tmp_seed);
+				System.out.println("generated_Key : " + Secret_key);
 				
-				byte[] passwd_Input = new byte[16];
-				byte[] passwd_Output= new byte[16];
 				String passwd_Hash="";
 				String passwd_Send="";
-				System.out.println("==============passwd length : " + passwd.length());
 				
 				Securoid_Hashing hash = new Securoid_Hashing();
 				passwd_Hash = hash.MD5(passwd);
-				System.out.println("=======passwd_Hash.length : " + passwd_Hash.length());
-				System.out.println("=======passwd_Hash : " + passwd_Hash);
-				passwd_Input = hexToByteArray(passwd_Hash);
-				System.out.println("======passwd_Input.length : " + passwd_Input.length);
 				
-				
-				//for(int k=0; k< passwd.length(); k++)
-				//	passwd_Input[k]=(byte)passwd.charAt(k);
-				
-				
-				//System.out.println("==========passwd.getBytes length: " +passwd.getBytes().length);
-				
-				//for(int k=passwd.length();k<16;k++){
-				//	passwd_Input[k]=0;//add padding to make 16 bytes. 
-				//}
-				
-				seed.SeedRoundKey(pdwRoundKey, deviceKey);
-				seed.SeedEncrypt(passwd_Input, pdwRoundKey, passwd_Output);
-				
-				System.out.println("======passwd_Output.length : " + passwd_Output.length);
-				System.out.println("======passwd_Output : " + passwd_Output);
-				//passwd = seed_encrypt(device_id, passwd);
-				
-				//for(int k=0; k<16; k++)
-				//	passwd_Send+=passwd_Output[k];
-				
-				
+				byte[] passwd_Output = new byte[16];				
+				passwd_Output = SeedEncryption(hexToByteArray(passwd_Hash),hexToByteArray(Secret_key));
 				
 				passwd_Send = byteArrayToHex(passwd_Output);
 		        
 				System.out.println("=========passwd_Send.length : " + passwd_Send.length());
 				System.out.println("-------- Original Password : " + passwd_Send);
-
-				byte[] tempbyte = hexToByteArray(passwd_Send);
-				byte[] decrypt_Output = new byte[16];
-				seed.SeedDecrypt(tempbyte, pdwRoundKey, decrypt_Output);
-				
-				
-				System.out.println("===========real original : " + byteArrayToHex(decrypt_Output));
-				
-				
+					
 				snd_packet = id + " " + String.valueOf(type) + " " + passwd_Send;
 
 				pw.println(snd_packet);
@@ -247,5 +202,41 @@ public class Client_App {
 	        sb.append(hexNumber.substring(hexNumber.length() - 2));
 	    }
 	    return sb.toString();
+	}
+	
+	public static byte[] SeedEncryption(byte[] passwd_Input, byte[] encrypt_key) {
+		
+		byte[] passwd_Output= new byte[16];
+		int pdwRoundKey[] = new int[32];
+			
+		SeedX seed = new SeedX();
+		//round key array for seed algorithm
+				
+		seed.SeedRoundKey(pdwRoundKey, encrypt_key);
+		seed.SeedEncrypt(passwd_Input, pdwRoundKey, passwd_Output);
+		
+		return passwd_Output;
+	}
+	
+	public static byte[] SeedDecryption(byte[] decrypt_Input, byte[] decrypt_key) {
+		byte[] decrypt_Output= new byte[16];
+		int pdwRoundKey[] = new int[32];
+			
+		SeedX seed = new SeedX();
+		//round key array for seed algorithm
+				
+		seed.SeedRoundKey(pdwRoundKey, decrypt_key);
+		seed.SeedDecrypt(decrypt_Input, pdwRoundKey, decrypt_Output);
+		
+		return decrypt_Output;
+	}
+	
+	public static String Diffie_Hellman_Key(int key1, int key2){
+		double DH_key = Math.pow(Math.pow(alpha, key1),key2)%p;
+		
+		Securoid_Hashing hash = new Securoid_Hashing();
+		String key = hash.MD5(String.valueOf(DH_key));
+				
+		return key; 
 	}
 }
