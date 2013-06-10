@@ -72,11 +72,11 @@ public class Server_App {
 				if(cnt > 10000000)
 					break;
 				//after 100 check terminate
-				System.out.println("=========TESTING1==========");
+				//System.out.println("=========TESTING1==========");
 				rcv_packet = br.readLine();
-				System.out.println("=========TESTING2==========");
+				//System.out.println("=========TESTING2==========");
 				if(rcv_packet == null){
-					System.out.println(cnt++);
+					cnt++;
 					continue;
 				}
 				
@@ -159,7 +159,7 @@ public class Server_App {
 					//for(int k=0; k<rcv_data.length(); k++)
 					//	decrypt_Input[k]= (byte)rcv_data.charAt(k);
 					Securoid_Hashing hash = new Securoid_Hashing();
-					decrypt_Input = new java.math.BigInteger(rcv_data, 16).toByteArray();
+					decrypt_Input = hexToByteArray(rcv_data);
 					
 					seed.SeedDecrypt(decrypt_Input, pdwRoundKey, decrypt_Output);
 					
@@ -169,7 +169,7 @@ public class Server_App {
 					
 					//for(int k=0; k<16; k++)
 					//	rcv_pass += decrypt_Output[k];//= seed_decrypt(user1.device_id, rcv_data);
-					rcv_pass = new java.math.BigInteger(decrypt_Output).toString(16);
+					rcv_pass = byteArrayToHex(decrypt_Output);
 					
 					System.out.println("Here?3");
 					//System.out.println("rcvd password(decrypted) : " + rcv_pass + " length : " + rcv_pass.length());
@@ -264,6 +264,34 @@ public class Server_App {
 		otp_key = new String(tmp);
 		
 		return otp_key;
+	}
+	// hex to byte[]
+	public static byte[] hexToByteArray(String hex) {
+	    if (hex == null || hex.length() == 0) {
+	        return null;
+	    }
+	 
+	    byte[] ba = new byte[hex.length() / 2];
+	    for (int i = 0; i < ba.length; i++) {
+	        ba[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+	    }
+	    return ba;
+	}
+	 
+	// byte[] to hex
+	public static String byteArrayToHex(byte[] ba) {
+	    if (ba == null || ba.length == 0) {
+	        return null;
+	    }
+	 
+	    StringBuffer sb = new StringBuffer(ba.length * 2);
+	    String hexNumber;
+	    for (int x = 0; x < ba.length; x++) {
+	        hexNumber = "0" + Integer.toHexString(0xff & ba[x]);
+	 
+	        sb.append(hexNumber.substring(hexNumber.length() - 2));
+	    }
+	    return sb.toString();
 	}
 }
 

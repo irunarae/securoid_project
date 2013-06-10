@@ -66,7 +66,11 @@ public class Client_App {
 				
 				Securoid_Hashing hash = new Securoid_Hashing();
 				passwd_Hash = hash.MD5(passwd);
-				passwd_Input = new java.math.BigInteger(passwd_Hash, 16).toByteArray();
+				System.out.println("=======passwd_Hash.length : " + passwd_Hash.length());
+				System.out.println("=======passwd_Hash : " + passwd_Hash);
+				passwd_Input = hexToByteArray(passwd_Hash);
+				System.out.println("======passwd_Input.length : " + passwd_Input.length);
+				
 				
 				//for(int k=0; k< passwd.length(); k++)
 				//	passwd_Input[k]=(byte)passwd.charAt(k);
@@ -80,13 +84,27 @@ public class Client_App {
 				
 				seed.SeedRoundKey(pdwRoundKey, deviceKey);
 				seed.SeedEncrypt(passwd_Input, pdwRoundKey, passwd_Output);
+				
+				System.out.println("======passwd_Output.length : " + passwd_Output.length);
+				System.out.println("======passwd_Output : " + passwd_Output);
 				//passwd = seed_encrypt(device_id, passwd);
 				
 				//for(int k=0; k<16; k++)
 				//	passwd_Send+=passwd_Output[k];
-				passwd_Send = new java.math.BigInteger(passwd_Output).toString(16);
+				
+				
+				
+				passwd_Send = byteArrayToHex(passwd_Output);
+		        
 				System.out.println("=========passwd_Send.length : " + passwd_Send.length());
 				System.out.println("-------- Original Password : " + passwd_Send);
+
+				byte[] tempbyte = hexToByteArray(passwd_Send);
+				byte[] decrypt_Output = new byte[16];
+				seed.SeedDecrypt(tempbyte, pdwRoundKey, decrypt_Output);
+				
+				
+				System.out.println("===========real original : " + byteArrayToHex(decrypt_Output));
 				
 				
 				snd_packet = id + " " + String.valueOf(type) + " " + passwd_Send;
@@ -154,5 +172,33 @@ public class Client_App {
 		pw.close();
 		sock.close();
 		//all should be closed after working
+	}
+	// hex to byte[]
+	public static byte[] hexToByteArray(String hex) {
+	    if (hex == null || hex.length() == 0) {
+	        return null;
+	    }
+	 
+	    byte[] ba = new byte[hex.length() / 2];
+	    for (int i = 0; i < ba.length; i++) {
+	        ba[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+	    }
+	    return ba;
+	}
+	 
+	// byte[] to hex
+	public static String byteArrayToHex(byte[] ba) {
+	    if (ba == null || ba.length == 0) {
+	        return null;
+	    }
+	 
+	    StringBuffer sb = new StringBuffer(ba.length * 2);
+	    String hexNumber;
+	    for (int x = 0; x < ba.length; x++) {
+	        hexNumber = "0" + Integer.toHexString(0xff & ba[x]);
+	 
+	        sb.append(hexNumber.substring(hexNumber.length() - 2));
+	    }
+	    return sb.toString();
 	}
 }
