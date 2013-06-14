@@ -296,8 +296,8 @@ public class Server_App {
 		char[] tmp = new char[32];
 		int num_max = 57;
 		int num_min = 48;
-		int char_max = 70;
-		int char_min = 65;
+		int char_max = 102;
+		int char_min = 97;
 		String otp_key = null;
 		
 		for(int i = 0 ; i < 32 ; i ++){
