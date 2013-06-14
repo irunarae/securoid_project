@@ -293,14 +293,14 @@ public class Server_App {
 	}//will use it for handshake 2(otp)
 	
 	public static String random_otp_key(){
-		char[] tmp = new char[16];
+		char[] tmp = new char[32];
 		int num_max = 57;
 		int num_min = 48;
 		int char_max = 70;
 		int char_min = 65;
 		String otp_key = null;
 		
-		for(int i = 0 ; i < 16 ; i ++){
+		for(int i = 0 ; i < 32 ; i ++){
 			if(Math.random()>0.5)
 				tmp[i] = (char)((int)(Math.random()*(num_max-num_min+1))+num_min);
 			else
