@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.DecimalFormat;
 //import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 
 import java.sql.*;
@@ -209,12 +210,13 @@ public class Server_App {
 						user1.set_r(r);
 						user1.set_otp_key(otp_key);
 						//r, otp_key generation partition ended
-						
-						
+						DecimalFormat df = new DecimalFormat("00000000000000000000000000000000");
+						String tmp_r = byteArrayToHex(SeedEncryption(hexToByteArray(df.format(r)), hexToByteArray(tmp_device_id)));
+						String tmp_otp_key = byteArrayToHex(SeedEncryption(hexToByteArray(otp_key), hexToByteArray(tmp_device_id)));
 						//tmp_r = seed_encrypt(device_id, r);
 						//tmp_otp_key = seed_encrypt(device_id, otp_key);
 						
-						snd_packet = user1.id + " " + "1" + " " + String.valueOf(r) + " " + otp_key;
+						snd_packet = user1.id + " " + "1" + " " + tmp_r + " " + tmp_otp_key;
 						pw.println(snd_packet);
 					}
 					System.out.println("Here?4");

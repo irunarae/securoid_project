@@ -27,7 +27,7 @@ public class Client_App {
 		int type = 0;
 		//String passwd = "securoid";
 		String device_id = "1234567891011121";
-		byte deviceKey[] = device_id.getBytes("KSC5601");
+		//byte deviceKey[] = device_id.getBytes("KSC5601");
 		
 		int r = 0;
 		String otp_key = null;
@@ -126,9 +126,10 @@ public class Client_App {
 					// initial sending
 				} else if (rcv_type == 1) {
 					// OTP Process
-					r = Integer.parseInt(rcv_data);
+					r = Integer.parseInt(byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data),hexToByteArray(device_id))));
+					//r = Integer.parseInt(rcv_data);
 					// r = seed_decrypt(device_id, r);
-					otp_key = rcv_data2;
+					otp_key = byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data2),hexToByteArray(device_id)));//rcv_data2;
 					// otp_key = seed_decrypt(device_id, otp_key);
 
 					Securoid_Hashing hash = new Securoid_Hashing();
