@@ -62,7 +62,7 @@ public class Client_App {
 			if(type == 0){
 				
 				client_rnd_seed = random_client_rnd_seed();
-				
+				client_rnd_seed = (int) Math.pow(alpha,client_rnd_seed)%p;
 				snd_packet = id + " " + String.valueOf(type) + " " + client_rnd_seed;
 				pw.println(snd_packet);
 				
@@ -254,7 +254,7 @@ public class Client_App {
 	}
 	
 	public static String Diffie_Hellman_Key(int key1, int key2){
-		double DH_key = Math.pow(Math.pow(alpha, key1),key2)%p;
+		double DH_key = Math.pow(key1,key2)%p;
 		
 		Securoid_Hashing hash = new Securoid_Hashing();
 		String key = hash.MD5(String.valueOf(DH_key));
