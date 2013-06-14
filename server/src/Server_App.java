@@ -123,12 +123,7 @@ public class Server_App {
 					//tmp
 					String tmp_pass = "";
 					String tmp_device_id = "";
-					
-					byte pbUserKey[] = {(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
-							(byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07,
-							(byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B,
-							(byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F};
-					String tmp_key = byteArrayToHex(pbUserKey);
+					String tmp_key = "";
 					
 					//sql query
 					System.out.println("Here");
@@ -156,7 +151,7 @@ public class Server_App {
 								
 								System.out.println(tmp_pass);
 								System.out.println(tmp_device_id);
-								System.out.println("rq.getString(5) : " + rq.getString(5));
+								System.out.println(tmp_key);
 							}
 						}
 						catch(SQLException ex){

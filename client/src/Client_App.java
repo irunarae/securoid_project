@@ -31,22 +31,7 @@ public class Client_App {
 		
 		int r = 0;
 		String otp_key = null;
-		
-		byte pbUserKey[] = {(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
-				(byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07,
-				(byte)0x08, (byte)0x09, (byte)0x0A, (byte)0x0B,
-				(byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F};
-		//picture encryption key
-		
-		byte Master_Key[] = {(byte)0x00, (byte)0x19, (byte)0xD1, (byte)0x4E,
-				(byte)0xF5, (byte)0xC9, (byte)0x86, (byte)0xF2,
-				(byte)0xC1, (byte)0x2A, (byte)0x4C, (byte)0xEB,
-				(byte)0x72, (byte)0x50, (byte)0x8D, (byte)0x42};
-		
-		System.out.println("encrypted key : " + byteArrayToHex(SeedEncryption(pbUserKey, Master_Key)));
-		
-		String key = String.valueOf(pbUserKey);
-		
+		String key = "";
 		//tmp initialization
 		//should get from the user's input or arguments
 		
@@ -168,8 +153,6 @@ public class Client_App {
 					// finally we get the key for decryption
 					success = true;
 					System.out.println("Got password : " + key);
-					System.out.println("Photo_Original_Key : "
-							+ byteArrayToHex(pbUserKey));
 
 					// String path = new
 					// String("C:/Users/Irunarae/Desktop/CTF/cube.png_encrypted.bmp");
