@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.DecimalFormat;
 //import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 
 import java.sql.*;
@@ -148,6 +147,7 @@ public class Server_App {
 							while(rq.next()){
 								tmp_pass = rq.getString(3);
 								tmp_device_id = rq.getString(4);
+								tmp_device_id = String.format("%32s", tmp_device_id).replace(' ', '0');
 								tmp_key = rq.getString(5);
 								
 								System.out.println(tmp_pass);
@@ -210,9 +210,10 @@ public class Server_App {
 						user1.set_r(r);
 						user1.set_otp_key(otp_key);
 						//r, otp_key generation partition ended
-						DecimalFormat df = new DecimalFormat("00000000000000000000000000000000");
-						String tmp_r = byteArrayToHex(SeedEncryption(hexToByteArray(df.format(r)), hexToByteArray(tmp_device_id)));
-						String tmp_otp_key = byteArrayToHex(SeedEncryption(hexToByteArray(otp_key), hexToByteArray(tmp_device_id)));
+						String tmp_r = String.format("%32s", String.valueOf(r)).replace(' ', '0');
+						String tmp_otp_key = String.format("%32s", otp_key).replace(' ', '0');
+						tmp_r = byteArrayToHex(SeedEncryption(hexToByteArray(tmp_r), hexToByteArray(tmp_device_id)));
+						tmp_otp_key = byteArrayToHex(SeedEncryption(hexToByteArray(otp_key), hexToByteArray(tmp_device_id)));
 						//tmp_r = seed_encrypt(device_id, r);
 						//tmp_otp_key = seed_encrypt(device_id, otp_key);
 						
