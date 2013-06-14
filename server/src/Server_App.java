@@ -147,7 +147,6 @@ public class Server_App {
 							while(rq.next()){
 								tmp_pass = rq.getString(3);
 								tmp_device_id = rq.getString(4);
-								tmp_device_id = String.format("%32s", tmp_device_id).replace(' ', '0');
 								tmp_key = rq.getString(5);
 								
 								System.out.println(tmp_pass);
@@ -212,8 +211,8 @@ public class Server_App {
 						//r, otp_key generation partition ended
 						String tmp_r = String.format("%32s", String.valueOf(r)).replace(' ', '0');
 						//String tmp_otp_key = String.format("%32s", otp_key).replace(' ', '0');
-						tmp_r = byteArrayToHex(SeedEncryption(hexToByteArray(tmp_r), hexToByteArray(tmp_device_id)));
-						String tmp_otp_key = byteArrayToHex(SeedEncryption(hexToByteArray(otp_key), hexToByteArray(tmp_device_id)));
+						tmp_r = byteArrayToHex(SeedEncryption(hexToByteArray(tmp_r), hexToByteArray(Secret_key)));
+						String tmp_otp_key = byteArrayToHex(SeedEncryption(hexToByteArray(otp_key), hexToByteArray(Secret_key)));
 												
 						snd_packet = user1.id + " " + "1" + " " + tmp_r + " " + tmp_otp_key;
 						pw.println(snd_packet);
@@ -226,10 +225,8 @@ public class Server_App {
 					
 					String tmp;
 					int tmp_r;
-					String tmp_device_id;
 					tmp = user1.get_otp_key();
 					tmp_r = user1.get_r();
-					tmp_device_id = user1.device_id;
 					
 					Securoid_Hashing hash = new Securoid_Hashing();
 					
@@ -238,7 +235,7 @@ public class Server_App {
 					//with user's id, find the user's own r, otp_key from the user class
 
 					String tmp_hash = tmp;
-					String rcv_hash = byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data),hexToByteArray(tmp_device_id)));
+					String rcv_hash = byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data),hexToByteArray(Secret_key)));
 					
 					
 					if(!rcv_hash.equals(tmp_hash)){
@@ -250,7 +247,9 @@ public class Server_App {
 					}
 					else{
 						String key = user1.key;
-						String tmp_key = byteArrayToHex(SeedDecryption(hexToByteArray(key),Master_Key));// = seed_encrypt(otp_key, key)
+						byte[] tmp_data = SeedDecryption(hexToByteArray(key),Master_Key);
+						tmp_data = SeedEncryption(tmp_data, hexToByteArray(user1.get_otp_key()));
+						String tmp_key = byteArrayToHex(SeedEncryption(tmp_data, hexToByteArray(Secret_key))); 
 						
 						snd_packet = user1.id + " " + "2" + " " + tmp_key; 
 						pw.println(snd_packet);

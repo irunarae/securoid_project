@@ -126,10 +126,9 @@ public class Client_App {
 					// type 0 is actual login process
 					// initial sending
 				} else if (rcv_type == 1) {
-					String tmp_device_id = String.format("%32s", device_id).replace(' ', '0');
 					// OTP Process
-					r = Integer.parseInt(byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data),hexToByteArray(tmp_device_id))));
-					otp_key = byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data2),hexToByteArray(tmp_device_id)));
+					r = Integer.parseInt(byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data),hexToByteArray(Secret_key))));
+					otp_key = byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data2),hexToByteArray(Secret_key)));
 
 					Securoid_Hashing hash = new Securoid_Hashing();
 
@@ -140,7 +139,7 @@ public class Client_App {
 					// with user's id, find the user's own r, otp_key from the
 					// user class
 
-					String hashed_key = byteArrayToHex(SeedEncryption(hexToByteArray(tmp),hexToByteArray(tmp_device_id)));
+					String hashed_key = byteArrayToHex(SeedEncryption(hexToByteArray(tmp),hexToByteArray(Secret_key)));
 					
 					snd_packet = id + " " + String.valueOf(type) + " "
 							+ hashed_key;
@@ -149,7 +148,9 @@ public class Client_App {
 					System.out.println("Now Securoid enter rcv_type1");
 				} else if (rcv_type == 2) {
 					// OTP Authentication completed
-					key = rcv_data;// =seed_decrypt(device_id, rcv_data);
+					byte[] tmp_data = SeedDecryption(hexToByteArray(rcv_data), hexToByteArray(Secret_key));
+					key = byteArrayToHex(SeedDecryption(tmp_data, hexToByteArray(otp_key))); 
+					
 					// finally we get the key for decryption
 					success = true;
 					System.out.println("Got password : " + key);
