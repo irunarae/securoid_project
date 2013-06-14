@@ -226,8 +226,10 @@ public class Server_App {
 					
 					String tmp;
 					int tmp_r;
+					String tmp_device_id;
 					tmp = user1.get_otp_key();
 					tmp_r = user1.get_r();
+					tmp_device_id = user1.device_id;
 					
 					Securoid_Hashing hash = new Securoid_Hashing();
 					
@@ -236,8 +238,8 @@ public class Server_App {
 					//with user's id, find the user's own r, otp_key from the user class
 
 					String tmp_hash = tmp;
-					String rcv_hash = rcv_data;
-					//rcv_hash = seed_decrypt(device_id, rcv_hash);
+					String rcv_hash = byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data),hexToByteArray(tmp_device_id)));
+					
 					
 					if(!rcv_hash.equals(tmp_hash)){
 						//invalid user

@@ -129,10 +129,7 @@ public class Client_App {
 					String tmp_device_id = String.format("%32s", device_id).replace(' ', '0');
 					// OTP Process
 					r = Integer.parseInt(byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data),hexToByteArray(tmp_device_id))));
-					//r = Integer.parseInt(rcv_data);
-					// r = seed_decrypt(device_id, r);
-					otp_key = byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data2),hexToByteArray(tmp_device_id)));//rcv_data2;
-					// otp_key = seed_decrypt(device_id, otp_key);
+					otp_key = byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data2),hexToByteArray(tmp_device_id)));
 
 					Securoid_Hashing hash = new Securoid_Hashing();
 
@@ -143,8 +140,8 @@ public class Client_App {
 					// with user's id, find the user's own r, otp_key from the
 					// user class
 
-					String hashed_key = tmp;
-					// hashed_key = seed_encrypt(device_id, tmp);
+					String hashed_key = byteArrayToHex(SeedEncryption(hexToByteArray(tmp),hexToByteArray(tmp_device_id)));
+					
 					snd_packet = id + " " + String.valueOf(type) + " "
 							+ hashed_key;
 					pw.println(snd_packet);
