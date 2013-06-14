@@ -14,6 +14,8 @@ import java.sql.*;
 public class Server_App {
 	private static int alpha = 2521;
 	private static int p = 10859;
+	//variables for diffie helman argorithm
+	
 	public static void main(String[] args) throws IOException
 	{
 			String Secret_key = null;
@@ -21,9 +23,12 @@ public class Server_App {
 					(byte)0xF5, (byte)0xC9, (byte)0x86, (byte)0xF2,
 					(byte)0xC1, (byte)0x2A, (byte)0x4C, (byte)0xEB,
 					(byte)0x72, (byte)0x50, (byte)0x8D, (byte)0x42};
+			//initial variables for original key
+			
 			Connection conn = null;
 			Statement stmt = null;
 			ResultSet rq = null;
+			//classes for database process
 					
 			try{
 				Class.forName("com.mysql.jdbc.Driver");
@@ -43,6 +48,8 @@ public class Server_App {
 			Socket sock;
 			BufferedReader br;
 			PrintWriter pw;
+			//classes for socket communication
+			//they has another explanation on the other positions 
 			
 			while(true){
 				
@@ -66,11 +73,13 @@ public class Server_App {
 			//print writer which sends messages via socket
 			
 			String snd_packet;
+			//string variable for packet that will be sent to the client
 			
 			String rcv_id;
 			int rcv_type;
 			String rcv_packet;
 			String rcv_data;
+			//variables for received packet
 
 			User user1 = null;
 			//temp user
@@ -80,53 +89,66 @@ public class Server_App {
 				snd_packet = "";
 				
 				if(cnt > 100){
-					
-					//all should be closed after working
-					//hi
 					System.out.println("Connection for user1 is going to be closed and new connection will be held");
 					break;
 				}
-				//after 100 check terminate
-				//System.out.println("=========TESTING1==========");
+				//after 100 check terminate a connection with a client
+				//that means after termination, the server will be waiting for another client
+				
+				
 				rcv_packet = br.readLine();
-				//System.out.println("=========TESTING2==========");
+				//get the packet from socket
+				
 				if(rcv_packet == null){
 					cnt++;
 					continue;
 				}
+				//if there is no packet, count be added
 				
 				
 				cnt = 0;
 				System.out.println(rcv_packet);
-				//for test
 				
 				String[] toks = rcv_packet.split(" ");
 				rcv_id = toks[0];
 				rcv_type = Integer.parseInt(toks[1]);
 
-				//type should be considered after
 				rcv_data = toks[2];
+				//packet is splited into three positions
+				//1. client's ID
+				//2. packet's type
+				// 0 : pre-handshake
+				// 1 : log-in process
+				// 2 : otp process
+				//3. packet's data
 				
-				
+				//packet's type is dependent to the client's state
 				if(rcv_type == 0){
 					int client_rnd_seed = Integer.parseInt(rcv_data);
 					//You should do the seed_key generate operation in here!!!!!!!!!!!!!!!!!!!!!!!!!!
+					
+					// --------------------------------------------------------------------------------------------------------------------
+					// Key generatioin check code start
 					int server_rnd_seed = random_server_rnd_seed();
 					server_rnd_seed = (int) Math.pow(alpha,server_rnd_seed)%p;								
 					snd_packet = rcv_id + " " + "0" + " " + server_rnd_seed;
+					// --------------------------------------------------------------------------------------------------------------------
+					// Key generatioin check code end
+					
 					pw.println(snd_packet);
+					//for check the packet to the client
 					
 					Secret_key = Diffie_Hellman_Key(client_rnd_seed, server_rnd_seed);
+					//generating the key for security on the whole process with one client
 				}
+				
 				else if(rcv_type == 1){
-					System.out.println("rcv_type_0_if_statement?");
 					//tmp
 					String tmp_pass = "";
 					String tmp_device_id = "";
 					String tmp_key = "";
 					
-					//sql query
-					System.out.println("Here");
+					//partition of sql query will be started
 					try{
 						
 
