@@ -152,10 +152,11 @@ public class Server_App {
 							while(rq.next()){
 								tmp_pass = rq.getString(3);
 								tmp_device_id = rq.getString(4);
-								System.out.println("rq.getString(5) : " + rq.getString(5));
+								tmp_key = rq.getString(5);
 								
 								System.out.println(tmp_pass);
 								System.out.println(tmp_device_id);
+								System.out.println("rq.getString(5) : " + rq.getString(5));
 							}
 						}
 						catch(SQLException ex){
