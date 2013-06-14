@@ -212,7 +212,9 @@ public class Server_App {
 						//r, otp_key generation partition ended
 						String tmp_r = String.format("%32s", String.valueOf(r)).replace(' ', '0');
 						String tmp_otp_key = String.format("%32s", otp_key).replace(' ', '0');
+						System.out.println("tmp_r : " + tmp_r);
 						tmp_r = byteArrayToHex(SeedEncryption(hexToByteArray(tmp_r), hexToByteArray(tmp_device_id)));
+						System.out.println("tmp_otp : " + tmp_otp_key);
 						tmp_otp_key = byteArrayToHex(SeedEncryption(hexToByteArray(otp_key), hexToByteArray(tmp_device_id)));
 						//tmp_r = seed_encrypt(device_id, r);
 						//tmp_otp_key = seed_encrypt(device_id, otp_key);
