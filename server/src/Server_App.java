@@ -294,12 +294,17 @@ public class Server_App {
 	
 	public static String random_otp_key(){
 		char[] tmp = new char[16];
-		int char_max = 255;
-		int char_min = 0;
+		int num_max = 57;
+		int num_min = 48;
+		int char_max = 70;
+		int char_min = 65;
 		String otp_key = null;
 		
 		for(int i = 0 ; i < 16 ; i ++){
-			tmp[i] = (char)((int)(Math.random()*(char_max-char_min+1))+char_min);
+			if(Math.random()>0.5)
+				tmp[i] = (char)((int)(Math.random()*(num_max-num_min+1))+num_min);
+			else
+				tmp[i] = (char)((int)(Math.random()*(char_max-char_min+1))+char_min);
 		}
 		
 		otp_key = new String(tmp);
