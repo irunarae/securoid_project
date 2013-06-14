@@ -17,6 +17,10 @@ public class Server_App {
 	public static void main(String[] args) throws IOException
 	{
 			String Secret_key = null;
+			byte Master_Key[] = {(byte)0x00, (byte)0x19, (byte)0xD1, (byte)0x4E,
+					(byte)0xF5, (byte)0xC9, (byte)0x86, (byte)0xF2,
+					(byte)0xC1, (byte)0x2A, (byte)0x4C, (byte)0xEB,
+					(byte)0x72, (byte)0x50, (byte)0x8D, (byte)0x42};
 			Connection conn = null;
 			Statement stmt = null;
 			ResultSet rq = null;
@@ -148,6 +152,7 @@ public class Server_App {
 							while(rq.next()){
 								tmp_pass = rq.getString(3);
 								tmp_device_id = rq.getString(4);
+								System.out.println("rq.getString(5) : " + rq.getString(5));
 								
 								System.out.println(tmp_pass);
 								System.out.println(tmp_device_id);
@@ -246,7 +251,7 @@ public class Server_App {
 					}
 					else{
 						String key = user1.key;
-						String tmp_key = key;// = seed_encrypt(otp_key, key)
+						String tmp_key = byteArrayToHex(SeedDecryption(hexToByteArray(key),Master_Key));// = seed_encrypt(otp_key, key)
 						
 						snd_packet = user1.id + " " + "2" + " " + tmp_key; 
 						pw.println(snd_packet);

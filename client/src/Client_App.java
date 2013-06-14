@@ -38,6 +38,13 @@ public class Client_App {
 				(byte)0x0C, (byte)0x0D, (byte)0x0E, (byte)0x0F};
 		//picture encryption key
 		
+		byte Master_Key[] = {(byte)0x00, (byte)0x19, (byte)0xD1, (byte)0x4E,
+				(byte)0xF5, (byte)0xC9, (byte)0x86, (byte)0xF2,
+				(byte)0xC1, (byte)0x2A, (byte)0x4C, (byte)0xEB,
+				(byte)0x72, (byte)0x50, (byte)0x8D, (byte)0x42};
+		
+		System.out.println("encrypted key : " + byteArrayToHex(SeedEncryption(pbUserKey, Master_Key)));
+		
 		String key = String.valueOf(pbUserKey);
 		
 		//tmp initialization
