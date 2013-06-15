@@ -23,26 +23,26 @@ public class Client_App {
 		
 		System.out.println("Success");
 		
-		//String id = "securoid";
 		int type = 0;
-		//String passwd = "securoid";
 		String device_id = "1234567891011121";
+		//just hard-coded device_id
 		
-		//byte deviceKey[] = device_id.getBytes("KSC5601");
 		
 		int r = 0;
 		String otp_key = null;
 		String key = "";
-		//tmp initialization
-		//should get from the user's input or arguments
+		//r, otp_key, key will be taken from the server
+		//with some processes
 		
 		String snd_packet = "";
 		byte data[] = new byte[16];
+		//variables for sending
 
 		String rcv_packet = "";
 		String rcv_id;
 		int rcv_type;
 		String rcv_data, rcv_data2 = "";
+		//variables for received packet
 				
 		Boolean success = false;
 		int cnt = 0;
@@ -51,6 +51,7 @@ public class Client_App {
 		while(!success){
 			if(cnt > 3)
 				break;
+			//this loop will be ended when the process is success or process is failed for trois(3 times)
 			
 			if(type == 0){
 				
@@ -68,14 +69,18 @@ public class Client_App {
 				continue;
 			
 			String[] toks = rcv_packet.split(" ");
-			rcv_id = toks[0];
+			//packet is splited into three positions
+			//1. client's ID
+			//2. packet's type
+			// 0 : pre-handshake
+			// 1 : log-in process
+			// 2 : otp process
+			//3. packet's data
 			
+			rcv_id = toks[0];
 			if(!rcv_id.equals(id))
 				continue;
-			
 			rcv_type = Integer.parseInt(toks[1]);
-						
-			//type should be considered after
 			if(rcv_type==4){
 				JOptionPane.showMessageDialog(null, "Can not find User information");
 				break;
@@ -84,12 +89,11 @@ public class Client_App {
 
 				if (toks.length >= 4 && toks[3] != null)
 					rcv_data2 = toks[3];
-
+				
+				//pre-handshake for diffie hellman key exchange
 				if (rcv_type == 0) {
-					// TODO:
+					
 					int server_rnd_seed = Integer.parseInt(rcv_data);
-					// You should do the seed_key generate operation in
-					// here!!!!!!!!!!!!!!!!!!!!!!!!!!
 					Secret_key = Diffie_Hellman_Key(server_rnd_seed,
 							client_rnd_seed);
 
@@ -101,15 +105,18 @@ public class Client_App {
 					// --------------------------------------------------------------------------------------------------------------------
 					// Key generatioin check code end
 
+					//log-in process starting
+					
 					String passwd_Hash = "";
 					String passwd_Send = "";
 
 					Securoid_Hashing hash = new Securoid_Hashing();
+					//class for hashing
 					passwd_Hash = hash.MD5(passwd);
-
 					byte[] passwd_Output = new byte[16];
 					passwd_Output = SeedEncryption(hexToByteArray(passwd_Hash),
 							hexToByteArray(Secret_key));
+					//passwd from user's input is hashed and seed encrypted
 
 					passwd_Send = byteArrayToHex(passwd_Output);
 
@@ -123,12 +130,12 @@ public class Client_App {
 
 					pw.println(snd_packet);
 					type++;
-					// type 0 is actual login process
-					// initial sending
 				} else if (rcv_type == 1) {
 					// OTP Process
 					r = Integer.parseInt(byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data),hexToByteArray(Secret_key))));
 					otp_key = byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data2),hexToByteArray(Secret_key)));
+					//get encrypted r, otp_key
+					//so decrypt them
 
 					Securoid_Hashing hash = new Securoid_Hashing();
 
@@ -136,16 +143,21 @@ public class Client_App {
 					tmp = otp_key;
 					for (int i = 0; i < r; i++)
 						tmp = hash.MD5(tmp);
-					// with user's id, find the user's own r, otp_key from the
-					// user class
+					//r times hashing otp_key
 
-					String hashed_key = byteArrayToHex(SeedEncryption(hexToByteArray(tmp),hexToByteArray(Secret_key)));
+					String hashed_otp_key = byteArrayToHex(SeedEncryption(hexToByteArray(tmp),hexToByteArray(Secret_key)));
+					//and r times hashed otp_key is encrypted
+					
+					System.out.println("=========hashed_otp_key_Send.length : "
+							+ hashed_key_Send.length());
+					System.out.println("-------- Original otp_key : "
+							+ otp_key);
 					
 					snd_packet = id + " " + String.valueOf(type) + " "
-							+ hashed_key;
+							+ hashed_otp_key;
 					pw.println(snd_packet);
 					type++;
-					System.out.println("Now Securoid enter rcv_type1");
+					
 				} else if (rcv_type == 2) {
 					// OTP Authentication completed
 					byte[] tmp_data = SeedDecryption(hexToByteArray(rcv_data), hexToByteArray(Secret_key));
@@ -155,17 +167,14 @@ public class Client_App {
 					success = true;
 					System.out.println("Got password : " + key);
 
-					// String path = new
-					// String("C:/Users/Irunarae/Desktop/CTF/cube.png_encrypted.bmp");
 					decrypt_File(path, key);
 					JOptionPane.showMessageDialog(null, "Securoid Works Done!");
+					//decrypt the file
 
 				} else {
-					// OTP Failure
-					// restart?
+					//failure
 					type = 0;
 					cnt++;
-					JOptionPane.showMessageDialog(null, "Test Massage");
 					// retry trois
 				}
 			}

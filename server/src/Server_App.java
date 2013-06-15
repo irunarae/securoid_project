@@ -83,6 +83,7 @@ public class Server_App {
 
 			User user1 = null;
 			//temp user
+			
 			int cnt = 0;
 						
 			while(true){
@@ -123,9 +124,9 @@ public class Server_App {
 				//3. packet's data
 				
 				//packet's type is dependent to the client's state
+				//pre-handshake for diffie hellman key exchange
 				if(rcv_type == 0){
 					int client_rnd_seed = Integer.parseInt(rcv_data);
-					//You should do the seed_key generate operation in here!!!!!!!!!!!!!!!!!!!!!!!!!!
 					
 					// --------------------------------------------------------------------------------------------------------------------
 					// Key generatioin check code start
@@ -142,11 +143,11 @@ public class Server_App {
 					//generating the key for security on the whole process with one client
 				}
 				
+				//log-in process starting
 				else if(rcv_type == 1){
-					//tmp
-					String tmp_pass = "";
-					String tmp_device_id = "";
-					String tmp_key = "";
+					String user_pass = "";
+					String user_device_id = "";
+					String user_key = "";
 					
 					//partition of sql query will be started
 					try{
@@ -167,13 +168,15 @@ public class Server_App {
 
 						try{
 							while(rq.next()){
-								tmp_pass = rq.getString(3);
-								tmp_device_id = rq.getString(4);
-								tmp_key = rq.getString(5);
+								user_pass = rq.getString(3);
+								user_device_id = rq.getString(4);
+								user_key = rq.getString(5);
+								//get user information from sql
 								
-								System.out.println(tmp_pass);
-								System.out.println(tmp_device_id);
-								System.out.println(tmp_key);
+								System.out.println(user_pass);
+								System.out.println(user_device_id);
+								System.out.println(user_key);
+								//show user information for check
 							}
 						}
 						catch(SQLException ex){
@@ -186,33 +189,26 @@ public class Server_App {
 					catch(SQLException ex){
 						System.err.println("SQL Error_2");
 					}
+					//partition of sql query has been ended
 					
-					System.out.println("Here?");
-					user1 = new User(rcv_id, tmp_pass, tmp_device_id, tmp_key);
-					System.out.println("Here?1");
-					                                                                                                                                                                                                                                                                                                                                                                                                         
-					System.out.println("------------------- Error Detector : " + rcv_data.length());
+					user1 = new User(rcv_id, user_pass, user_device_id, user_key);
+					//user1 is determined by the information that comes from sql
+					
 					System.out.println("------------------- RCV_DATA ORIGINAL : " + rcv_data);
 					
 					Securoid_Hashing hash = new Securoid_Hashing();
+					//class for hashing
 					
 					byte[] decrypt_Output = new byte[16];
 					decrypt_Output = SeedDecryption(hexToByteArray(rcv_data),hexToByteArray(Secret_key));
+					//rcv_data is hashed and seed encrypted usr passwd
 					
-					System.out.println("Here?2");
 					String rcv_pass="";
-					
-					//for(int k=0; k<16; k++)
-					//	rcv_pass += decrypt_Output[k];//= seed_decrypt(user1.device_id, rcv_data);
 					rcv_pass = byteArrayToHex(decrypt_Output);
+					//rcv_pass is decrypted but yet hashed usr passwd
 					
 					System.out.println("RCV_PASS returned : " + rcv_pass);
 					
-					System.out.println("Here?3");
-					//System.out.println("rcvd password(decrypted) : " + rcv_pass + " length : " + rcv_pass.length());
-					//System.out.println("user1.pass : " + user1.passwd + "length : " + user1.passwd.length());
-					//System.out.println("rcv_pass.equals(user1.passwd) : " + rcv_pass.equals(user1.passwd));
-					//seed decryption for rcv_data(passwd) with user.device_id
 					if(!rcv_pass.equals(hash.MD5(user1.passwd))){
 						//invalid user
 						System.out.println("passwd hash : " + hash.MD5(user1.passwd));
@@ -223,7 +219,7 @@ public class Server_App {
 					}
 					else{
 						//valid user
-						System.out.println("valid user!! Welcome!!");
+						System.out.println("valid user in log-in process!! Welcome!!");
 						int r = random_r();
 						String otp_key = random_otp_key();
 						//r, otp_key random generate
@@ -231,47 +227,57 @@ public class Server_App {
 						user1.set_r(r);
 						user1.set_otp_key(otp_key);
 						//r, otp_key generation partition ended
+						
 						String tmp_r = String.format("%32s", String.valueOf(r)).replace(' ', '0');
-						//String tmp_otp_key = String.format("%32s", otp_key).replace(' ', '0');
 						tmp_r = byteArrayToHex(SeedEncryption(hexToByteArray(tmp_r), hexToByteArray(Secret_key)));
 						String tmp_otp_key = byteArrayToHex(SeedEncryption(hexToByteArray(otp_key), hexToByteArray(Secret_key)));
-												
+						//r, otp_key seed encrypt partition
+						
 						snd_packet = user1.id + " " + "1" + " " + tmp_r + " " + tmp_otp_key;
 						pw.println(snd_packet);
+						//send
 					}
-					System.out.println("Here?4");
-					//user
+					//log-in process ended
 				}
+
+				//otp process starting
 				else if(rcv_type == 2){
-					//user null check should be done
 					
-					String tmp;
-					int tmp_r;
-					tmp = user1.get_otp_key();
-					tmp_r = user1.get_r();
+					String tmp_otp_key;
+					int user_r;
+					tmp_otp_key = user1.get_otp_key();
+					user_r = user1.get_r();
+					//user's own r, otp_key are randomely generated and stored in log-in process
 					
 					Securoid_Hashing hash = new Securoid_Hashing();
 					
-					for(int i = 0 ; i < tmp_r ; i ++)
-						tmp = hash.MD5(tmp);
-					//with user's id, find the user's own r, otp_key from the user class
-
-					String tmp_hash = tmp;
+					for(int i = 0 ; i < user_r ; i ++)
+						tmp_otp_key = hash.MD5(tmp_otp_key);
+					String user_otp_key_hash = tmp_otp_key;
+					//r times hashed otp_key from server's data
+					
 					String rcv_hash = byteArrayToHex(SeedDecryption(hexToByteArray(rcv_data),hexToByteArray(Secret_key)));
+					//r times hashed otp_key from client
 					
-					
-					if(!rcv_hash.equals(tmp_hash)){
+					if(!rcv_hash.equals(user_otp_key_hash)){
+						System.out.println("otp_key hash : " + user_otp_key_hash);
 						//invalid user
 						snd_packet = user1.id + " " + "4";
-						System.out.println("this is has failed log");
+						System.out.println("invalid user");
 						pw.println(snd_packet);
 						break;
 					}
 					else{
+						//valid user
+						System.out.println("valid user in otp-process!! Welcome!!");
+						
 						String key = user1.key;
 						byte[] tmp_data = SeedDecryption(hexToByteArray(key),Master_Key);
+						//key which was stored in database is encrypted with master key by seed algorithm
+						
 						tmp_data = SeedEncryption(tmp_data, hexToByteArray(user1.get_otp_key()));
 						String tmp_key = byteArrayToHex(SeedEncryption(tmp_data, hexToByteArray(Secret_key))); 
+						//key to be sent is encrypted with otp_key
 						
 						snd_packet = user1.id + " " + "2" + " " + tmp_key; 
 						pw.println(snd_packet);
