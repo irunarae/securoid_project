@@ -148,8 +148,8 @@ public class Client_App {
 					String hashed_otp_key = byteArrayToHex(SeedEncryption(hexToByteArray(tmp),hexToByteArray(Secret_key)));
 					//and r times hashed otp_key is encrypted
 					
-					System.out.println("=========hashed_otp_key_Send.length : "
-							+ hashed_key_Send.length());
+					System.out.println("=========hashed_otp_key.length : "
+							+ hashed_otp_key.length());
 					System.out.println("-------- Original otp_key : "
 							+ otp_key);
 					
